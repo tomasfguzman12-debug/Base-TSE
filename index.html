@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRM TSE 2025 · Universidad Sergio Arboleda</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --rojo: #C8102E; --rojo-dark: #9e0b22; --rojo-light: #f5d0d7;
+  --dorado: #B8960C; --dorado-light: #f5edd0;
+  --blanco: #FFFFFF; --gris-fondo: #F4F5F7; --gris-borde: #E0E2E8;
+  --gris-med: #9299A8; --gris-texto: #3A3F4A; --negro: #1A1D24;
+  --verde: #1a7a4a; --verde-bg: #d4eddf;
+  --rojo-bg: #fce8eb; --amber: #92600a; --amber-bg: #fef3d8;
+  --azul: #1a4fa0; --azul-bg: #dbe8fc;
+  --purple: #5b21b6; --purple-bg: #ede9fe;
+  --shadow: 0 2px 12px rgba(0,0,0,0.08); --shadow-lg: 0 8px 32px rgba(0,0,0,0.14);
+  --radius: 10px; --radius-sm: 6px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'IBM Plex Sans', sans-serif; background: var(--gris-fondo); color: var(--gris-texto); min-height: 100vh; }
+
+/* ─── TOPBAR ─────────────────────────────────────── */
+.topbar {
+  background: var(--negro); padding: 0 28px;
+  display: flex; align-items: center; gap: 20px; height: 62px;
+  position: sticky; top: 0; z-index: 200; border-bottom: 3px solid var(--rojo);
+}
+.brand { display: flex; align-items: center; gap: 14px; }
+.brand-logo {
+  width: 38px; height: 38px; background: var(--rojo); border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700;
+  color: white; letter-spacing: -1px; flex-shrink: 0;
+}
+.brand-name { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: white; letter-spacing: 0.02em; }
+.brand-sub { font-size: 0.68rem; color: var(--gris-med); font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.06em; text-transform: uppercase; }
+.topbar-divider { width: 1px; height: 30px; background: #333; }
+.topbar-search { flex: 1; max-width: 400px; position: relative; }
+.topbar-search input {
+  width: 100%; background: #252830; border: 1px solid #363a46; border-radius: 8px;
+  padding: 9px 14px 9px 38px; color: white; font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.85rem; outline: none; transition: border-color 0.2s;
+}
+.topbar-search input:focus { border-color: var(--rojo); }
+.topbar-search input::placeholder { color: #666; }
+.topbar-search-icon { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: #666; }
+.topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+
+/* ─── BUTTONS ─────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 16px; border-radius: var(--radius-sm); border: none;
+  cursor: pointer; font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.82rem; font-weight: 500; transition: all 0.15s;
+}
+.btn-primary { background: var(--rojo); color: white; }
+.btn-primary:hover { background: var(--rojo-dark); }
+.btn-ghost { background: transparent; border: 1px solid #444; color: #aaa; }
+.btn-ghost:hover { border-color: #888; color: white; }
+.btn-success { background: var(--verde); color: white; }
+.btn-success:hover { filter: brightness(0.9); }
+.btn-sm { padding: 5px 10px; font-size: 0.76rem; }
+.btn-danger { background: var(--rojo-bg); color: var(--rojo); border: 1px solid #f8b4bf; }
+.btn-danger:hover { background: var(--rojo); color: white; }
+
+/* ─── STATBAR ─────────────────────────────────────── */
+.statbar {
+  background: white; border-bottom: 1px solid var(--gris-borde);
+  padding: 0 28px; display: flex; overflow-x: auto;
+}
+.stat-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 24px 14px 0; margin-right: 24px;
+  border-right: 1px solid var(--gris-borde); white-space: nowrap;
+}
+.stat-item:last-child { border-right: none; }
+.stat-icon { width: 38px; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+.stat-val { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; line-height: 1; }
+.stat-label { font-size: 0.7rem; color: var(--gris-med); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 1px; }
+
+/* ─── FILTERS ─────────────────────────────────────── */
+.filters-bar {
+  background: white; border-bottom: 1px solid var(--gris-borde);
+  padding: 10px 28px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
+}
+.filter-pill {
+  padding: 5px 14px; border-radius: 20px; border: 1px solid var(--gris-borde);
+  background: transparent; color: var(--gris-med); font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.78rem; cursor: pointer; transition: all 0.15s; font-weight: 500;
+}
+.filter-pill:hover { border-color: var(--rojo); color: var(--rojo); }
+.filter-pill.active { background: var(--rojo); border-color: var(--rojo); color: white; }
+.filter-sep { width: 1px; background: var(--gris-borde); height: 22px; margin: 0 2px; }
+.filter-select {
+  padding: 5px 28px 5px 12px; border-radius: 20px; border: 1px solid var(--gris-borde);
+  background: white; color: var(--gris-texto); font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.78rem; cursor: pointer; outline: none; appearance: none; font-weight: 500;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239299A8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 9px center;
+}
+.view-toggle { margin-left: auto; display: flex; gap: 4px; }
+.view-btn {
+  padding: 5px 14px; border-radius: var(--radius-sm); border: 1px solid var(--gris-borde);
+  background: transparent; color: var(--gris-med); font-size: 0.78rem; cursor: pointer;
+  font-family: 'IBM Plex Sans', sans-serif; font-weight: 500; transition: all 0.15s;
+}
+.view-btn.active { background: var(--negro); color: white; border-color: var(--negro); }
+
+/* ─── MAIN ─────────────────────────────────────────── */
+main { padding: 20px 28px; }
+.table-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.count-text { font-size: 0.78rem; color: var(--gris-med); font-family: 'IBM Plex Mono', monospace; }
+
+/* ─── TABLE ─────────────────────────────────────────── */
+.table-wrap {
+  background: white; border-radius: var(--radius); border: 1px solid var(--gris-borde);
+  overflow: hidden; box-shadow: var(--shadow);
+}
+table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
+thead tr { background: #F8F9FB; border-bottom: 2px solid var(--gris-borde); }
+th {
+  padding: 11px 14px; text-align: left; font-weight: 600;
+  font-size: 0.69rem; text-transform: uppercase; letter-spacing: 0.07em;
+  color: var(--gris-med); cursor: pointer; white-space: nowrap; user-select: none; transition: color 0.15s;
+}
+th:hover { color: var(--gris-texto); }
+th.sort-asc::after { content: ' ↑'; color: var(--rojo); }
+th.sort-desc::after { content: ' ↓'; color: var(--rojo); }
+tbody tr { border-bottom: 1px solid #F0F1F4; transition: background 0.1s; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: #FAFBFD; }
+td { padding: 11px 14px; vertical-align: middle; }
+
+/* ─── NOTA DISPLAY ─────────────────────────────────── */
+.nota-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 10px; border-radius: 20px; font-weight: 700;
+  font-size: 0.78rem; white-space: nowrap; font-family: 'IBM Plex Mono', monospace;
+}
+.nota-alta  { background: #d4eddf; color: #1a7a4a; }
+.nota-media { background: #dbe8fc; color: #1a4fa0; }
+.nota-baja  { background: #fef3d8; color: #92600a; }
+.nota-pend  { background: #f0f0f0; color: #888; }
+
+/* ─── BADGES ─────────────────────────────────────────── */
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 10px; border-radius: 20px;
+  font-size: 0.7rem; font-weight: 600; white-space: nowrap; line-height: 1.3;
+}
+.badge-ok      { background: var(--verde-bg); color: var(--verde); }
+.badge-dev     { background: var(--amber-bg); color: var(--amber); }
+.badge-no      { background: var(--rojo-bg); color: var(--rojo); }
+.badge-equipo  { background: var(--azul-bg); color: var(--azul); }
+.badge-miembro { background: #f0f0f8; color: #6060aa; }
+.badge-bog     { background: #e8f0fe; color: #1a4fa0; }
+.badge-baq     { background: #e6f4ea; color: #1a7a4a; }
+.badge-gold    { background: var(--dorado-light); color: var(--dorado); }
+.badge-sust    { background: var(--purple-bg); color: var(--purple); }
+
+/* ─── CARDS VIEW ─────────────────────────────────────── */
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }
+.pcard {
+  background: white; border: 1px solid var(--gris-borde); border-radius: var(--radius);
+  padding: 18px; box-shadow: var(--shadow); transition: all 0.18s;
+  position: relative; cursor: pointer;
+}
+.pcard:hover { box-shadow: var(--shadow-lg); border-color: var(--rojo); transform: translateY(-1px); }
+.pcard-stripe {
+  position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  border-radius: var(--radius) var(--radius) 0 0;
+  background: linear-gradient(90deg, var(--rojo), var(--dorado));
+}
+.pcard-top { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 12px; margin-top: 6px; }
+.pcard-name { font-weight: 600; font-size: 0.95rem; line-height: 1.3; }
+.pcard-sub { font-size: 0.74rem; color: var(--gris-med); margin-top: 2px; }
+.pcard-badges { display: flex; flex-direction: column; gap: 4px; align-items: flex-end; }
+.pcard-row { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; margin-bottom: 6px; }
+.pcard-icon { color: var(--gris-med); width: 16px; text-align: center; flex-shrink: 0; }
+.pcard-row a { color: var(--rojo); text-decoration: none; word-break: break-all; }
+.pcard-pills { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--gris-borde); }
+.sust-mini {
+  margin-top: 10px; padding: 8px 12px; border-radius: 8px;
+  background: var(--purple-bg); border: 1px solid #c4b5fd;
+  display: flex; align-items: center; gap: 10px;
+}
+.sust-mini-nota { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--purple); }
+.sust-mini-comment { font-size: 0.72rem; color: #5b21b6; line-height: 1.35; flex: 1; }
+
+/* ─── TEAMS VIEW ─────────────────────────────────────── */
+.teams-list { display: flex; flex-direction: column; gap: 14px; }
+.tcard { background: white; border: 1px solid var(--gris-borde); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+.tcard-header {
+  padding: 14px 18px; display: flex; align-items: center; gap: 14px;
+  cursor: pointer; background: white; border-bottom: 1px solid var(--gris-borde); transition: background 0.15s;
+}
+.tcard-header:hover { background: #FAFBFD; }
+.tcard-num {
+  width: 40px; height: 40px; border-radius: 8px; background: var(--rojo); color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; flex-shrink: 0;
+}
+.tcard-info { flex: 1; }
+.tcard-title { font-weight: 600; font-size: 0.95rem; }
+.tcard-meta { font-size: 0.75rem; color: var(--gris-med); margin-top: 2px; }
+.tcard-right { margin-left: auto; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.chevron { font-size: 0.7rem; color: var(--gris-med); transition: transform 0.2s; }
+.tcard.open .chevron { transform: rotate(180deg); }
+.tcard-body { display: none; padding: 12px 14px; }
+.tcard.open .tcard-body { display: block; }
+.mrow {
+  display: flex; align-items: center; gap: 12px;
+  padding: 9px 10px; border-radius: 8px; cursor: pointer;
+  margin-bottom: 3px; transition: background 0.12s;
+}
+.mrow:hover { background: #F4F5F7; }
+.avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--rojo), var(--rojo-dark));
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.75rem; color: white; flex-shrink: 0;
+}
+.avatar-mentor { background: linear-gradient(135deg, var(--dorado), #8a6c00); }
+.mrow-info { flex: 1; min-width: 0; }
+.mrow-name { font-size: 0.85rem; font-weight: 600; }
+.mrow-email { font-size: 0.73rem; color: var(--gris-med); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mentor-strip {
+  background: var(--dorado-light); border: 1px solid #dbb800; border-radius: 8px;
+  padding: 10px 14px; margin-top: 10px; display: flex; align-items: center; gap: 12px;
+}
+.mentor-strip-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--amber); font-weight: 600; }
+.mentor-strip-name { font-size: 0.85rem; font-weight: 600; color: var(--negro); }
+.mentor-strip-meta { font-size: 0.73rem; color: var(--amber); }
+
+/* ─── SUSTENTACIÓN BLOCK (in teams) ──────────────────── */
+.sust-block {
+  background: var(--purple-bg); border: 1px solid #c4b5fd; border-radius: 8px;
+  padding: 12px 16px; margin-top: 10px;
+}
+.sust-block-header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.sust-block-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--purple); font-weight: 600; }
+.sust-block-nota { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; color: var(--purple); line-height: 1; }
+.sust-block-stars { color: var(--purple); font-size: 0.85rem; }
+.sust-block-comment { font-size: 0.78rem; color: #5b21b6; line-height: 1.5; }
+
+/* ─── MODAL ─────────────────────────────────────────── */
+.backdrop {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+  z-index: 500; display: none; align-items: center; justify-content: center;
+  padding: 20px; backdrop-filter: blur(3px);
+}
+.backdrop.open { display: flex; }
+.modal {
+  background: white; border-radius: 14px; width: 100%; max-width: 720px;
+  max-height: 92vh; overflow-y: auto; box-shadow: var(--shadow-lg); position: relative;
+}
+.modal-head {
+  background: linear-gradient(135deg, var(--negro) 0%, #2a1a1e 100%);
+  padding: 24px 28px 20px; border-radius: 14px 14px 0 0; border-bottom: 3px solid var(--rojo);
+  position: sticky; top: 0; z-index: 10;
+}
+.modal-close {
+  position: absolute; top: 14px; right: 14px;
+  background: rgba(255,255,255,0.1); border: none; color: white;
+  width: 30px; height: 30px; border-radius: 50%; cursor: pointer;
+  font-size: 1rem; display: flex; align-items: center; justify-content: center; transition: background 0.15s;
+}
+.modal-close:hover { background: rgba(255,255,255,0.2); }
+.modal-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: white; margin-bottom: 4px; padding-right: 36px; }
+.modal-subtitle { font-size: 0.75rem; color: #aaa; font-family: 'IBM Plex Mono', monospace; }
+.modal-tabs {
+  display: flex; gap: 0; background: white;
+  border-bottom: 2px solid var(--gris-borde); padding: 0 28px;
+  position: sticky; top: 77px; z-index: 9;
+}
+.modal-tab {
+  padding: 11px 18px; border: none; background: transparent; cursor: pointer;
+  font-family: 'IBM Plex Sans', sans-serif; font-size: 0.83rem; font-weight: 500;
+  color: var(--gris-med); border-bottom: 2px solid transparent; margin-bottom: -2px;
+  transition: all 0.15s;
+}
+.modal-tab:hover { color: var(--gris-texto); }
+.modal-tab.active { color: var(--rojo); border-bottom-color: var(--rojo); font-weight: 600; }
+.modal-body { padding: 24px 28px; }
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
+.modal-footer {
+  padding: 16px 28px; border-top: 1px solid var(--gris-borde);
+  display: flex; justify-content: space-between; align-items: center;
+  background: #FAFBFD; border-radius: 0 0 14px 14px;
+  position: sticky; bottom: 0; z-index: 9;
+}
+
+/* ─── FORMS ─────────────────────────────────────────── */
+.modal-section { margin-bottom: 22px; }
+.modal-section-title {
+  font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--gris-med); font-weight: 600; margin-bottom: 12px;
+  padding-bottom: 6px; border-bottom: 1px solid var(--gris-borde);
+}
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+.full { grid-column: 1 / -1; }
+.form-field { display: flex; flex-direction: column; gap: 4px; }
+.form-field label { font-size: 0.7rem; font-weight: 600; color: var(--gris-med); text-transform: uppercase; letter-spacing: 0.05em; }
+.form-field input, .form-field select, .form-field textarea {
+  padding: 8px 11px; border: 1.5px solid var(--gris-borde); border-radius: var(--radius-sm);
+  font-family: 'IBM Plex Sans', sans-serif; font-size: 0.85rem; color: var(--gris-texto);
+  outline: none; transition: border-color 0.15s; background: white;
+}
+.form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color: var(--rojo); }
+.form-field textarea { resize: vertical; min-height: 70px; }
+.form-field .read-only {
+  padding: 8px 11px; background: var(--gris-fondo); border: 1.5px solid var(--gris-borde);
+  border-radius: var(--radius-sm); font-size: 0.85rem; color: var(--gris-texto);
+}
+
+/* ─── NOTA VISUAL ─────────────────────────────────────── */
+.nota-display {
+  display: flex; align-items: center; gap: 14px; padding: 14px 16px;
+  background: var(--purple-bg); border: 1.5px solid #c4b5fd; border-radius: var(--radius);
+  margin-bottom: 16px;
+}
+.nota-big { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 700; color: var(--purple); line-height: 1; }
+.nota-stars-big { font-size: 1.1rem; margin-top: 2px; }
+.nota-bar-wrap { flex: 1; }
+.nota-bar-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--purple); font-weight: 600; margin-bottom: 6px; }
+.nota-bar { height: 8px; background: #ddd6fe; border-radius: 4px; overflow: hidden; }
+.nota-bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--purple), #7c3aed); transition: width 0.5s; }
+
+/* ─── TOAST ─────────────────────────────────────────── */
+.toast {
+  position: fixed; bottom: 24px; right: 24px; background: var(--negro); color: white;
+  padding: 12px 20px; border-radius: 8px; font-size: 0.84rem; z-index: 999;
+  transform: translateY(80px); opacity: 0; transition: all 0.3s;
+  box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 8px;
+  border-left: 4px solid var(--verde);
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast.error { border-left-color: var(--rojo); }
+
+/* ─── COPY BTN ─────────────────────────────────────── */
+.copy-btn {
+  background: var(--gris-fondo); border: 1px solid var(--gris-borde);
+  color: var(--gris-med); padding: 2px 8px; border-radius: 4px;
+  font-size: 0.68rem; cursor: pointer; transition: all 0.15s;
+  font-family: 'IBM Plex Sans', sans-serif; font-weight: 500;
+}
+.copy-btn:hover { background: var(--negro); color: white; border-color: var(--negro); }
+.copy-btn.ok { background: var(--verde-bg); color: var(--verde); border-color: #aadebc; }
+
+/* ─── EMPTY ─────────────────────────────────────────── */
+.empty { text-align: center; padding: 60px 20px; color: var(--gris-med); }
+.empty-icon { font-size: 2.5rem; margin-bottom: 10px; }
+
+/* ─── RESPONSIVE ─────────────────────────────────────── */
+@media (max-width: 768px) {
+  .topbar, .statbar, .filters-bar, main { padding-left: 14px; padding-right: 14px; }
+  .modal-head, .modal-body, .modal-footer { padding-left: 18px; padding-right: 18px; }
+  .form-grid, .form-grid.cols-3 { grid-template-columns: 1fr; }
+  .modal-tabs { padding: 0 14px; overflow-x: auto; }
+}
+.action-row { display: flex; gap: 4px; }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="brand">
+    <div class="brand-logo">SA</div>
+    <div class="brand-text">
+      <div class="brand-name">Centro de Emprendimiento</div>
+      <div class="brand-sub">TSE 2025 · CRM Coordinadora</div>
+    </div>
+  </div>
+  <div class="topbar-divider"></div>
+  <div class="topbar-search">
+    <span class="topbar-search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="Buscar nombre, C.C., plan de negocio, mentor...">
+  </div>
+  <div class="topbar-right">
+    <button class="btn btn-ghost btn-sm" onclick="exportCSV()">⬇ Exportar CSV</button>
+    <button class="btn btn-primary btn-sm" onclick="openAddModal()">＋ Nuevo participante</button>
+  </div>
+</div>
+
+<!-- STAT BAR -->
+<div class="statbar" id="statbar"></div>
+
+<!-- FILTERS -->
+<div class="filters-bar">
+  <button class="filter-pill active" onclick="setFilter('sede','')">Todas las sedes</button>
+  <button class="filter-pill" onclick="setFilter('sede','Bogotá')">🏙 Bogotá</button>
+  <button class="filter-pill" onclick="setFilter('sede','Barranquilla')">🌊 Barranquilla</button>
+  <div class="filter-sep"></div>
+  <button class="filter-pill active" onclick="setFilter('rol','')">Todos</button>
+  <button class="filter-pill" onclick="setFilter('rol','equipo')">🏆 Con equipo</button>
+  <button class="filter-pill" onclick="setFilter('rol','sin')">👤 Sin equipo</button>
+  <div class="filter-sep"></div>
+  <button class="filter-pill active" onclick="setFilter('pago','')">Todos los pagos</button>
+  <button class="filter-pill" onclick="setFilter('pago','OK')">✅ Pago OK</button>
+  <button class="filter-pill" onclick="setFilter('pago','DEV')">⚠️ Devolución</button>
+  <div class="filter-sep"></div>
+  <button class="filter-pill active" onclick="setFilter('carta','')">Todas</button>
+  <button class="filter-pill" onclick="setFilter('carta','SI')">📝 Con carta</button>
+  <button class="filter-pill" onclick="setFilter('carta','NO')">❌ Sin carta</button>
+  <div class="filter-sep"></div>
+  <button class="filter-pill active" onclick="setFilter('grupo','')">Todos los días</button>
+  <button class="filter-pill" onclick="setFilter('grupo','Viernes')">🗓 Viernes</button>
+  <button class="filter-pill" onclick="setFilter('grupo','Sábado')">🗓 Sábado</button>
+  <div class="filter-sep"></div>
+  <button class="filter-pill active" onclick="setFilter('sust','')">Con/Sin nota</button>
+  <button class="filter-pill" onclick="setFilter('sust','si')">⭐ Con nota</button>
+  <button class="filter-pill" onclick="setFilter('sust','no')">— Sin nota</button>
+  <div class="filter-sep"></div>
+  <select class="filter-select" id="mentorFilter" onchange="setMentorFilter(this.value)">
+    <option value="">Todos los mentores</option>
+  </select>
+  <select class="filter-select" id="especialistaFilter" onchange="setEspecialistaFilter(this.value)">
+    <option value="">Todos los especialistas</option>
+  </select>
+  <div class="view-toggle">
+    <button class="view-btn active" id="vbTable" onclick="setView('table')">☰ Tabla</button>
+    <button class="view-btn" id="vbCards" onclick="setView('cards')">⊞ Tarjetas</button>
+    <button class="view-btn" id="vbTeams" onclick="setView('teams')">👥 Equipos</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main>
+  <div class="table-header">
+    <span class="count-text" id="countLabel"></span>
+    <span style="font-size:0.75rem;color:var(--gris-med)">💾 Cambios guardados automáticamente en el navegador</span>
+  </div>
+
+  <div id="viewTable">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th onclick="sortBy('n')" id="th-n">N°</th>
+            <th onclick="sortBy('equipo')" id="th-equipo">Equipo</th>
+            <th onclick="sortBy('nombre')" id="th-nombre">Nombre</th>
+            <th onclick="sortBy('cc')" id="th-cc">C.C.</th>
+            <th onclick="sortBy('carrera')" id="th-carrera">Carrera</th>
+            <th onclick="sortBy('sede')" id="th-sede">Sede</th>
+            <th onclick="sortBy('grupo')" id="th-grupo">Día</th>
+            <th onclick="sortBy('pago')" id="th-pago">Pago</th>
+            <th onclick="sortBy('carta')" id="th-carta">Carta</th>
+            <th onclick="sortBy('plan')" id="th-plan">Plan de Negocio</th>
+            <th onclick="sortBy('sustNota')" id="th-sustNota">Nota</th>
+            <th onclick="sortBy('mentor')" id="th-mentor">Mentor</th>
+            <th onclick="sortBy('especialista')" id="th-especialista">Especialista</th>
+            <th onclick="sortBy('reuniones')" id="th-reuniones">Reun.</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="viewCards" style="display:none">
+    <div class="cards-grid" id="cardsContainer"></div>
+  </div>
+
+  <div id="viewTeams" style="display:none">
+    <div class="teams-list" id="teamsContainer"></div>
+  </div>
+</main>
+
+<!-- DETAIL / EDIT MODAL -->
+<div class="backdrop" id="modalBackdrop" onclick="closeOnBackdrop(event,'modalBackdrop')">
+  <div class="modal" id="detailModal">
+    <div class="modal-head">
+      <button class="modal-close" onclick="closeModal('modalBackdrop')">✕</button>
+      <div class="modal-title" id="mTitle">—</div>
+      <div class="modal-subtitle" id="mSub">—</div>
+    </div>
+    <div class="modal-tabs">
+      <button class="modal-tab active" onclick="switchTab('tab-info')">📋 Información</button>
+      <button class="modal-tab" onclick="switchTab('tab-programa')">🎓 Programa TSE</button>
+      <button class="modal-tab" onclick="switchTab('tab-pago')">💳 Pago</button>
+      <button class="modal-tab" onclick="switchTab('tab-mentor')">🎯 Mentor</button>
+      <button class="modal-tab" id="tab-sust-btn" onclick="switchTab('tab-sust')">⭐ Sustentación</button>
+      <button class="modal-tab" onclick="switchTab('tab-notas')">📌 Notas</button>
+    </div>
+    <div class="modal-body" id="mBody"></div>
+    <div class="modal-footer">
+      <div><button class="btn btn-danger btn-sm" onclick="deleteParticipant()">🗑 Eliminar</button></div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-ghost btn-sm" onclick="closeModal('modalBackdrop')">Cancelar</button>
+        <button class="btn btn-success btn-sm" onclick="saveParticipant()">💾 Guardar cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD MODAL -->
+<div class="backdrop" id="addBackdrop" onclick="closeOnBackdrop(event,'addBackdrop')">
+  <div class="modal">
+    <div class="modal-head">
+      <button class="modal-close" onclick="closeModal('addBackdrop')">✕</button>
+      <div class="modal-title">Nuevo Participante</div>
+      <div class="modal-subtitle">TSE 2025 · Centro de Emprendimiento</div>
+    </div>
+    <div class="modal-body" id="addBody"></div>
+    <div class="modal-footer">
+      <span style="font-size:0.75rem;color:var(--gris-med)">Los campos * son requeridos</span>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-ghost btn-sm" onclick="closeModal('addBackdrop')">Cancelar</button>
+        <button class="btn btn-primary btn-sm" onclick="addParticipant()">✚ Agregar participante</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── INIT DATA ────────────────────────────────────────────────────────────
+// sustentacion: { cr (N° correlativo PDF), nota (float|null), comentario, estado: 'sustentado'|'no_sustentacion'|'enero'|'' }
+const INIT_DATA = [
+  {n:1,equipo:1,carta:null,descuento:'SI',recibo:'5000119028',cancelado:'SI',costo:'V',grupo:'Sábado',sede:'Barranquilla',carrera:'Negocios digitales',nombre:'Juan pablo Leon quesada',cc:'1014297291',email:'juan.leon10@usa.edu.co',email2:'',celular:'3008494777',pago:'OK',plan:'Green Harves',mentor:'Joaquin Silva',emailMentor:'joaquin@buping.com.co',contactoMentor:'3107791500',reuniones:0,especialista:'ADRIANA CACERES',notas:'',sust:{cr:10,nota:4.0,comentario:'',estado:'sustentado'}},
+  {n:2,equipo:2,carta:null,descuento:'SI',recibo:'5000119029',cancelado:'SI',costo:'V',grupo:'Sábado',sede:'Bogotá',carrera:'Ingeniería Industrial',nombre:'Luis Eduardo Gasca Roa',cc:'1032452511',email:'luis.gasca@usa.edu.co',email2:'',celular:'3134534432',pago:'OK',plan:'Seu Mundo',mentor:'Leidy Lucumi',emailMentor:'leydi.lucumi@usa.edu.co',contactoMentor:'3166234894',reuniones:0,especialista:'CIELO LIZARAZO',notas:'',sust:{cr:22,nota:3.8,comentario:'CITARLA POR SU RESILIENCIA POR APLICAR SU CARRERA CON UN SUEÑO QUE TIENE, QUE NUNCA DEJE DE SOÑAR NI DE VOLAR COMO INGENIERA, QUE ES UN EJEMPLO PARA NUESTROS EMPRENDEDORES DE NUNCA RENDIRSE Y VALORAMOS SU DEDICACIÓN Y TALENTO QUE DEBE EXPLORARLO CON SU PROFESIÓN',estado:'sustentado'}},
+  {n:3,equipo:3,carta:null,descuento:'SI',recibo:'5000119074',cancelado:'SI',costo:'V',grupo:'Viernes',sede:'Barranquilla',carrera:'Marketing y Negocios Internacionales',nombre:'Mateo Florez',cc:'1048065564',email:'mateoflorez2510@gmail.com',email2:'Mateo.florez01@usa.edu.co',celular:'3008076906',pago:'OK',plan:'BLUPOWER',mentor:'KATHY SANJUAN',emailMentor:'kathesanjuan@hotmail.com',contactoMentor:'3204571530',reuniones:0,especialista:'ANGELA PULIDO',notas:'',sust:{cr:1,nota:4.5,comentario:'FELICITARLOS PORQUE ES UN TEMA TENDENCIA Y DE ALTO IMPACTO.',estado:'sustentado'}},
+  {n:4,equipo:null,carta:null,descuento:null,recibo:'5000119075',cancelado:'SI',costo:null,grupo:null,sede:null,carrera:null,nombre:'Samuel Florez',cc:'1048065565',email:'Samuel.florez02@usa.edu.co',email2:'',celular:'3008076907',pago:'OK',plan:null,mentor:null,emailMentor:null,contactoMentor:null,reuniones:0,especialista:null,notas:'',sust:{cr:null,nota:null,comentario:'',estado:''}},
+  {n:5,equipo:4,carta:'SI',descuento:'SI',recibo:'5000119041',cancelado:'SI',costo:'S',grupo:'Sábado',sede:'Bogotá',carrera:'Diseño Digital',nombre:'Juan José Vargas Roncancio',cc:'1000270773',email:'jujovaro0101@gmail.com',email2:'',celular:'3046668725',pago:'OK',plan:'Only elite',mentor:'Paula Margarita Rodriguez',emailMentor:'paulamargararodriguez@gmail.com',contactoMentor:'3013102120',reuniones:2,especialista:'JAIRO DUARTE',notas:'',sust:{cr:2,nota:4.1,comentario:'',estado:'sustentado'}},
+  {n:6,equipo:null,carta:'SI',descuento:null,recibo:'5000119042',cancelado:'SI',costo:null,grupo:null,sede:null,carrera:null,nombre:'Juan Esteban Ramírez',cc:'1027210328',email:'juan.ramirez19@usa.edu.co',email2:'',celular:'3209686937',pago:'OK',plan:null,mentor:null,emailMentor:null,contactoMentor:null,reuniones:0,especialista:null,notas:'',sust:{cr:null,nota:null,comentario:'',estado:''}},
+  {n:7,equipo:null,carta:'SI',descuento:null,recibo:'5000119043',cancelado:'SI',costo:null,grupo:null,sede:null,carrera:null,nombre:'Santiago Higinio pulido',cc:'1000150821',email:'santiago.higinio01@usa.edu.co',email2:'',celular:'3208363927',pago:'OK',plan:null,mentor:null,emailMentor:null,contactoMentor:null,reuniones:0,especialista:null,notas:'',sust:{cr:null,nota:null,comentario:'',estado:''}},
+  {n:8,equipo:5,carta:null,descuento:'SI',recibo:'5000119034',cancelado:'SI',costo:'V',grupo:'Sábado',sede:'Bogotá',carrera:'Negocios Estratégicos de Moda',nombre:'Isabella Pacheco Cabeza',cc:'1067836644',email:'isabellapachecoc@gmail.com',email2:'',celular:'3246274679',pago:'OK',plan:'Bogotá sin límites',mentor:'Julio Cesar García Sierra',emailMentor:'usadocentemk.juliocgarcia@gmail.com',contactoMentor:'3102743301',reuniones:1,especialista:'KATHY SANJUAN',notas:'',sust:{cr:19,nota:3.8,comentario:'',estado:'sustentado'}},
+  {n:9,equipo:6,carta:'SI',descuento:'SI',recibo:'5000119036',cancelado:'SI',costo:'V',grupo:'Sábado',sede:'Bogotá',carrera:'Finanzas y Comercio Exterior',nombre:'Gerlinton Jaiver Cubillos Rincón',cc:'1010004791',email:'gerlinton777@gmail.com',email2:'',celular:'3503584081',pago:'OK',plan:'Master Insumos - Soluciones para micropigmentación profesional',mentor:'Daniel Stubbs',emailMentor:'dstubs@hotmail.com',contactoMentor:'3204763365',reuniones:0,especialista:'KATHY SANJUAN',notas:'',sust:{cr:3,nota:4.5,comentario:'FELICITAR POR SU ESFUERZO EN APLICAR SU CARRERA EN UN TEMA MUY INTERESANTE Y LOS AVANCES EN ASPECTOS LEGALES QUE TUVO',estado:'sustentado'}},
+  {n:10,equipo:7,carta:null,descuento:'SI',recibo:'5000119037',cancelado:'SI',costo:'V',grupo:'Sábado',sede:'Bogotá',carrera:'Negocios Estratégicos de Moda',nombre:'Naren Guevara',cc:'1193272939',email:'narenguevara02@gmail.com',email2:'',celular:'3118331478',pago:'OK',plan:'TAMARÍ',mentor:'Mauricio Bolaños',emailMentor:'mauricio_bolanos_m@hotmail.com',contactoMentor:'3012412431',reuniones:1,especialista:'ADRIANA CORREA',notas:'',sust:{cr:4,nota:4.2,comentario:'',estado:'sustentado'}},
+  {n:11,equipo:null,carta:'SI',descuento:null,recibo:'5000119038',cancelado:'SI',costo:null,grupo:null,sede:null,carrera:null,nombre:'Alejandra Osorio Zapata',cc:'1106226222',email:'alejandraosoriozapata77@gmail.com',email2:'',celular:'3045803184',pago:'OK',plan:null,mentor:null,emailMentor:null,contactoMentor:null,reuniones:0,especialista:null,notas:'',sust:{cr:null,nota:null,comentario:'',estado:''}},
+  {n:12,equipo:8,carta:null,descuento:'SI',recibo:'5000119056',cancelado:'SI',costo:'V',grupo:'Viernes',sede:'Barranquilla',carrera:'Marketing y Negocios Internacionales',nombre:'Daniel Alejandro Royero de la Rosa',cc:'1044607170',email:'danielroyero123@gmail.com',email2:'daniel.royero01@usa.edu.co',celular:'3053164476',pago:'OK',plan:'Digital Music',mentor:'KATHY SANJUAN',emailMentor:'kathesanjuan@hotmail.com',contactoMentor:'3204571530',reuniones:0,especialista:'ANGELA PULIDO',notas:'',sust:{cr:18,nota:4.7,comentario:'FELICITALO POR APLICAR LAS RECOMENDACIONES Y UNIFICAR SU CARRERA CON TEMAS QUE LE APASIONAN, QUE DESEAMOS APOYARLO EN EL DESARROLLO DE SU EMPRENDIMIENTO Y QUE LLEVE MUCHA ALEGRÍA CON SU MÚSICA Y SUS IDEAS DE NEGOCIO, QUE SUS VALORES PERSONALES LE VAN A PERMITIR LLEGAR MUY LEJOS CON UNA BUENA PLANEACIÓN FINANCIERA EN SU NEGOCIO Y REALIZACIÓN PERSONAL',estado:'sustentado'}},
+  {n:13,equipo:9,carta:null,descuento:'SI',recibo:'5000119040',cancelado:'SI',costo:'V',grupo:'Sábado',sede:'Bogotá',carrera:'Comercio Internacional',nombre:'Pedro Alonso Mendoza Uribe',cc:'1012441329',email:'pedroa.mendoza@usa.edu.co',email2:'',celular:'3502027067',pago:'OK',plan:'MANGUI - cada bocado un rayo de sol colombiano',mentor:'Angela Pulido',emailMentor:'angelapulido07@icloud.com',contactoMentor:'3006761792',reuniones:0,especialista:'JAIRO DUARTE',notas:'',sust:{cr:5,nota:3.7,comentario:'DESEARLE MUCHOS ÉXITOS EN SU GRADUACIÓN Y LA IMPORTANCIA DE LLEVAR A LA REALIDAD SU EMPRENDIMIENTO QUE QUEREMOS CONOCER SU FÓRMULA APLICADA Y APOYARLO DESDE EMPRENDIMIENTO',estado:'sustentado'}},
+  {n:14,equipo:10,carta:'SI',descuento:'SI',recibo:'5000119055',cancelado:'SI',costo:'V',grupo:'Viernes',sede:'Barranquilla',carrera:'Marketing y Negocios Internacionales',nombre:'Isabella Ortega',cc:'1084450192',email:'isabella.ortega01@usa.edu.co',email2:'Isaortegaq17@gmail.com',celular:'3168345050',pago:'OK',plan:'Bellerose / spa y salón de belleza',mentor:'Andrés Felipe Soto',emailMentor:'andresfelipesotoorejuela@gmail.com',contactoMentor:'3142411251',reuniones:0,especialista:'CIELO LIZARAZO',notas:'',sust:{cr:25,nota:4.1,comentario:'',estado:'sustentado'}},
+  {n:15,equipo:11,carta:null,descuento:'SI',recibo:'5000119044',cancelado:'SI',costo:'S',grupo:'Sábado',sede:'Barranquilla',carrera:'Marketing y Negocios Internacionales',nombre:'Rodrigo Grass',cc:'1140905337',email:'rodrigo.grass01@usa.edu.co',email2:'',celular:'3162423358',pago:'OK',plan:'Traffiads',mentor:'Angela Pulido',emailMentor:'angelapulido07@icloud.com',contactoMentor:'3006761792',reuniones:0,especialista:'ADRIANA CORREA',notas:'',sust:{cr:6,nota:4.5,comentario:'',estado:'sustentado'}},
+  {n:16,equipo:null,carta:null,descuento:null,recibo:'5000119045',cancelado:'SI',costo:null,grupo:null,sede:null,carrera:null,nombre:'Andrés Gonzales',cc:'1048434223',email:'andres.gonzalez06@usa.edu.co',email2:'',celular:'3187729981',pago:'OK',plan:null,mentor:null,emailMentor:null,contactoMentor:null,reuniones:0,especialista:null,notas:'',sust:{cr:null,nota:null,comentario:'',estado:''}},
+  {n:null,equipo:null,carta:null,descuento:'SI',recibo:'5000119046',cancelado:'SI',costo:'S',grupo:null,sede:'Barranquilla',carrera:'Marketing y Negocios Internacionales',nombre:'Caila Danielle Rosas Urieta',cc:'1042242048',email:'caila.rosas01@usa.edu.co',email2:'',celular:'3043745302',pago:'DEVOLUCIÓN DE DINERO',plan:'Euphoria cócteles',mentor:null,emailMentor:null,contactoMentor:null,reuniones:0,especialista:null,notas:'Devolución de dinero',sust:{cr:null,nota:null,comentario:'',estado:''}},
+  {n:17,equipo:12,carta:'SI',descuento:'SI',recibo:'5000119050',cancelado:'SI',costo:'S',grupo:'Sábado',sede:'Barranquilla',carrera:'Marketing y Negocios Internacionales',nombre:'Ivan David Borrero Vargas',cc:'1001996729',email:'Ivan.borrero01@usa.edu.co',email2:'Borreroivan2002@gmail.com',celular:'3017903604',pago:'OK',plan:'LINKPSI',mentor:'Joaquin Silva',emailMentor:'joaquin@buping.com.co',contactoMentor:'3107791500',reuniones:0,especialista:'ANGELA PULIDO',notas:'',sust:{cr:7,nota:4.4,comentario:'',estado:'sustentado'}},
+  {n:18,equipo:null,carta:null,descuento:null,recibo:'5000119052',cancelado:'SI',costo:null,grupo:null,sede:null,carrera:null,nombre:'Santiago Maury Sterling',cc:'1193593852',email:'maurysterlings@gmail.com',email2:'Santiago.maury01@usa.edu.co',celular:'3102012558',pago:'OK',plan:null,mentor:null,emailMentor:null,contactoMentor:null,reuniones:0,especialista:null,notas:'',sust:{cr:null,nota:null,comentario:'',estado:''}},
+  {n:19,equipo:null,carta:null,descuento:null,recibo:'5000119053',cancelado:'SI',costo:null,grupo:null,sede:null,carrera:null,nombre:'Lucas Maury Sterling',cc:'1002161604',email:'lucas.maury01@usa.edu.co',email2:'maurysterlinglucas@gmail.com',celular:'3102009567',pago:'OK',plan:null,mentor:null,emailMentor:null,contactoMentor:null,reuniones:0,especialista:null,notas:'',sust:{cr:null,nota:null,comentario:'',estado:''}},
+  {n:20,equipo:13,carta:null,descuento:'SI',recibo:'5000119091',cancelado:'SI',costo:'S',grupo:'Sábado',sede:'Bogotá',carrera:'Moda',nombre:'María Fernanda Vargas Robayo',cc:'1000241900',email:'maria.vargas11@usa.edu.co',email2:'mafevargasrobayo@gmail.com',celular:'3212639364',pago:'OK',plan:'IAHORA',mentor:'Miryam Mesa',emailMentor:'miyomesa@hotmail.com',contactoMentor:'3163205585',reuniones:0,especialista:'ADRIANA CACERES',notas:'',sust:{cr:24,nota:4.6,comentario:'',estado:'sustentado'}},
+  {n:21,equipo:null,carta:null,descuento:null,recibo:'5000119092',cancelado:'SI',costo:null,grupo:null,sede:null,carrera:null,nombre:'Mariana Cadena Junco',cc:'1014856384',email:'mariaacj9@gmail.com',email2:'mariana.cadena01@usa.edu.co',celular:'3157500284',pago:'OK',plan:null,mentor:null,emailMentor:null,contactoMentor:null,reuniones:0,especialista:null,notas:'',sust:{cr:null,nota:null,comentario:'',estado:''}},
+  {n:22,equipo:null,carta:'SI',descuento:null,recibo:'5000119183',cancelado:'SI',costo:null,grupo:null,sede:null,carrera:null,nombre:'Luz Juanita Barrios',cc:'1193217853',email:'luz.barrios01@usa.edu.co',email2:'',celular:'3176810760',pago:'OK',plan:null,mentor:null,emailMentor:null,contactoMentor:null,reuniones:0,especialista:null,notas:'',sust:{cr:null,nota:null,comentario:'',estado:''}},
+  {n:23,equipo:14,carta:null,descuento:'SI',recibo:'5000119083',cancelado:'SI',costo:'V',grupo:'Sábado',sede:'Bogotá',carrera:'Ingeniería Industrial',nombre:'Juan Felipe Garcia Rayo',cc:'1029141069',email:'juan.garcia15@usa.edu.co',email2:'',celular:'3228496589',pago:'OK',plan:'Decolab',mentor:'Julio Cesar García Sierra',emailMentor:'usadocentemk.juliocgarcia@gmail.com',contactoMentor:'3102743301',reuniones:1,especialista:'KATHY SANJUAN',notas:'',sust:{cr:9,nota:4.0,comentario:'',estado:'sustentado'}},
+  {n:24,equipo:null,carta:null,descuento:null,recibo:'5000119084',cancelado:'SI',costo:null,grupo:null,sede:null,carrera:null,nombre:'Brandom Sebastián Martinez Moncada',cc:'1010069353',email:'Bsmm610@gmail.com',email2:'',celular:'3222243556',pago:'OK',plan:null,mentor:null,emailMentor:null,contactoMentor:null,reuniones:0,especialista:null,notas:'',sust:{cr:null,nota:null,comentario:'',estado:''}},
+  {n:25,equipo:15,carta:'SI',descuento:null,recibo:null,cancelado:null,costo:'V',grupo:'Viernes',sede:'Bogotá',carrera:'Tecnología en Publicidad Digital Virtual',nombre:'Laura Obdaly Garay Rodríguez',cc:'1031647416',email:'laura.garay03@usa.edu.co',email2:'obdalyg22@gmail.com',celular:'3228918029',pago:'OK',plan:'BULBIT STUDIO',mentor:'Hellen Hernández',emailMentor:'hellenhi.marketing@gmail.com',contactoMentor:'3008533003',reuniones:1,especialista:'ADRIANA CACERES',notas:'',sust:{cr:null,nota:null,comentario:'',estado:''}},
+  {n:26,equipo:16,carta:null,descuento:'SI',recibo:'5000119184',cancelado:'SI',costo:'S',grupo:'Sábado',sede:'Bogotá',carrera:'Finanzas, Fintech y Comercio',nombre:'Valery Alejandra Mora Polanco',cc:'1043962180',email:'valemora130504@gmail.com',email2:'',celular:'3057745347',pago:'OK',plan:'LM TECNOLOGÍA',mentor:'Hernan Mauricio Cortes',emailMentor:'macolo28@yahoo.com',contactoMentor:'3015360622',reuniones:0,especialista:'ADRIANA CORREA',notas:'',sust:{cr:26,nota:4.0,comentario:'FELICITARLOS POR LA PROYECCIÓN SOCIAL DEL PROYECTO PERO QUE ES IMPORTANTE VERIFICAR POR LA EDAD QUE TIENEN OPCIÓN DE OBTENER CAPITAL SEMILLA U OTROS BENEFICIOS PARA OBTENER SU CAPITAL Y HACER EMPRESA JOVEN.',estado:'sustentado'}},
+  {n:27,equipo:null,carta:null,descuento:null,recibo:'5000119185',cancelado:'SI',costo:null,grupo:null,sede:null,carrera:null,nombre:'Karen Sofía Zabala Cuéllar',cc:'1000834061',email:'sofiaacuellaar24@gmail.com',email2:'',celular:'3222187786',pago:'OK',plan:null,mentor:null,emailMentor:null,contactoMentor:null,reuniones:3,especialista:null,notas:'',sust:{cr:null,nota:null,comentario:'',estado:''}},
+  {n:28,equipo:null,carta:null,descuento:null,recibo:'5000119671',cancelado:'SI',costo:null,grupo:null,sede:null,carrera:null,nombre:'Oscar Estupiñan',cc:'1001219376',email:'oscar.estupinan01@usa.edu.co',email2:'',celular:'3192878636',pago:'OK',plan:null,mentor:null,emailMentor:null,contactoMentor:null,reuniones:0,especialista:null,notas:'',sust:{cr:null,nota:null,comentario:'',estado:''}},
+  {n:29,equipo:17,carta:'SI',descuento:null,recibo:'5000119172',cancelado:'SI',costo:'V',grupo:'Viernes',sede:'Barranquilla',carrera:'Negocios Digitales',nombre:'Valentina Celia',cc:'1001999918',email:'joanavalen2001@gmail.com',email2:'',celular:'3242213967',pago:'OK',plan:'Velas Senciah',mentor:'Adriana Machuca',emailMentor:'adrianapmachuca@gmail.com',contactoMentor:'3016384186',reuniones:0,especialista:'PAULA MARGARITA',notas:'',sust:{cr:8,nota:3.8,comentario:'',estado:'sustentado'}},
+  {n:30,equipo:18,carta:null,descuento:'SI',recibo:'5000119173',cancelado:'SI',costo:'V',grupo:'Viernes',sede:'Barranquilla',carrera:'Administración de Empresas',nombre:'Felipe Carbo',cc:'1234091475',email:'felipecarbo.98@gmail.com',email2:'',celular:'3168314967',pago:'OK',plan:'TERIYAKI ON FIRE',mentor:'Mauricio Bolaños',emailMentor:'mauricio_bolanos_m@hotmail.com',contactoMentor:'3012412431',reuniones:0,especialista:'JAIRO DUARTE',notas:'',sust:{cr:12,nota:null,comentario:'',estado:'sustentado'}},
+  {n:31,equipo:19,carta:null,descuento:'SI',recibo:'5000119175',cancelado:'SI',costo:'V',grupo:'Viernes',sede:'Bogotá',carrera:'Maestría',nombre:'Beatriz Adriana Cabrera Gutiérrez',cc:'1061727318',email:'Badricab28@gmail.com',email2:'',celular:'3106504352',pago:'OK',plan:'Kromo Suministros S.A.S',mentor:'Paula Margarita Rodriguez',emailMentor:'paulamargararodriguez@gmail.com',contactoMentor:'3013102120',reuniones:1,especialista:'KATHY SANJUAN',notas:'',sust:{cr:28,nota:4.6,comentario:'SUSTENTARON EN ENERO - ENTREGA EL 02 DE FEBRERO',estado:'enero'}},
+  {n:32,equipo:20,carta:'SI',descuento:null,recibo:'5000119177',cancelado:'SI',costo:'V',grupo:'Sábado',sede:'Bogotá',carrera:'Negocios Estratégicos de Moda',nombre:'Brizserika López Rugeles',cc:'1000160716',email:'brizserikalopezrugeles@outlook.com',email2:'brizserika.lopez01@usa.edu.co',celular:'3194552606',pago:'OK',plan:'HIKARA',mentor:'Valentina Osorio',emailMentor:'contacto@valentinaosoriou.com',contactoMentor:'3163779445',reuniones:2,especialista:'CIELO LIZARAZO',notas:'',sust:{cr:11,nota:4.1,comentario:'',estado:'sustentado'}},
+  {n:33,equipo:21,carta:'SI',descuento:'SI',recibo:'5000119182',cancelado:'SI',costo:'V',grupo:'Viernes',sede:'Bogotá',carrera:'Ciencias de la Computación',nombre:'Julian Cardenas Peñuela',cc:'1000519298',email:'juliancape360@gmail.com',email2:'Julian.cardenas01@usa.edu.co',celular:'3208147048',pago:'OK',plan:'JIA',mentor:'Joaquin Silva',emailMentor:'joaquin@buping.com.co',contactoMentor:'3107791500',reuniones:0,especialista:'JAIRO DUARTE',notas:'',sust:{cr:14,nota:4.1,comentario:'',estado:'sustentado'}},
+  {n:34,equipo:22,carta:null,descuento:null,recibo:'5000119187',cancelado:null,costo:'S',grupo:'Sábado',sede:'Barranquilla',carrera:'Marketing y Negocios Internacionales',nombre:'Oriana Restrepo Miranda',cc:'1004178856',email:'oriana.restrepo01@usa.edu.co',email2:'',celular:'3003645438',pago:'OK',plan:'AUREA AGENCY',mentor:'Julio Cesar García Sierra',emailMentor:'usadocentemk.juliocgarcia@gmail.com',contactoMentor:'3102743301',reuniones:1,especialista:'CIELO LIZARAZO',notas:'Pago no confirmado',sust:{cr:13,nota:4.3,comentario:'',estado:'sustentado'}},
+  {n:35,equipo:null,carta:null,descuento:null,recibo:'5000119188',cancelado:'SI',costo:null,grupo:null,sede:null,carrera:null,nombre:'Isabella Dueñas Campo',cc:'1044211845',email:'isabella.duenas01@usa.edu.co',email2:'',celular:'3135680953',pago:'OK',plan:null,mentor:null,emailMentor:null,contactoMentor:null,reuniones:0,especialista:null,notas:'',sust:{cr:null,nota:null,comentario:'',estado:''}},
+  {n:36,equipo:null,carta:'SI',descuento:'SI',recibo:'5000119189',cancelado:'SI',costo:null,grupo:null,sede:null,carrera:null,nombre:'Maria Camila Salas Maldonado',cc:'1042241746',email:'maria.salas03@usa.edu.co',email2:'',celular:'3153796762',pago:'OK',plan:null,mentor:null,emailMentor:null,contactoMentor:null,reuniones:0,especialista:null,notas:'',sust:{cr:null,nota:null,comentario:'',estado:''}},
+  {n:37,equipo:23,carta:'SI',descuento:null,recibo:'5000119226',cancelado:'SI',costo:'S',grupo:'Sábado',sede:'Bogotá',carrera:'Ingeniería Industrial',nombre:'Jeisson Cadena Cantillo',cc:'1082843916',email:'Cadenacantillojeisson@gmail.com',email2:'jeisson.cadena01@usa.edu.co',celular:'3017793490',pago:'OK',plan:'AURA VERDE',mentor:'Carlos Suescun',emailMentor:'csuescun25@gmail.com',contactoMentor:'3103050063',reuniones:1,especialista:'ANGELA PULIDO',notas:'',sust:{cr:15,nota:4.7,comentario:'FELICITARLOS QUE PARA ESTE SEMESTRE FUERON DE LOS MEJORES PLANES Y UN GRAN TRABAJO EN EQUIPO INTERDISCIPLINARIO',estado:'sustentado'}},
+  {n:38,equipo:null,carta:null,descuento:'SI',recibo:'5000119230',cancelado:'SI',costo:null,grupo:null,sede:null,carrera:'Administración Ambiental',nombre:'Paula Andrea Olmos Cancelada',cc:'1002604714',email:'paula.olmos01@usa.edu.co',email2:'',celular:'3187514346',pago:'OK',plan:null,mentor:null,emailMentor:null,contactoMentor:null,reuniones:0,especialista:null,notas:'',sust:{cr:null,nota:null,comentario:'',estado:''}},
+  {n:39,equipo:null,carta:null,descuento:null,recibo:'5000119231',cancelado:'SI',costo:null,grupo:null,sede:null,carrera:'Ingeniería Industrial',nombre:'Juan Andres Chaparro Rodriguez',cc:'1007688932',email:'juan.chaparro04@usa.edu.co',email2:'',celular:'3106803588',pago:'OK',plan:null,mentor:null,emailMentor:null,contactoMentor:null,reuniones:0,especialista:null,notas:'',sust:{cr:null,nota:null,comentario:'',estado:''}},
+  {n:40,equipo:24,carta:null,descuento:null,recibo:'5000119493',cancelado:'SI',costo:'V',grupo:'Sábado',sede:'Bogotá',carrera:'Marketing y Negocios Internacionales',nombre:'Vanesa Julieth Heredia Olaya',cc:'1007596124',email:'vanesaheredia133@gmail.com',email2:'',celular:'3152684082',pago:'OK',plan:'GOLD PETS',mentor:'Angela Pulido',emailMentor:'angelapulido07@icloud.com',contactoMentor:'3006761792',reuniones:0,especialista:'PAULA MARGARITA',notas:'',sust:{cr:16,nota:4.5,comentario:'',estado:'sustentado'}},
+  {n:41,equipo:25,carta:'SI',descuento:'SI',recibo:'5000119564',cancelado:'SI',costo:'S',grupo:'Sábado',sede:'Bogotá',carrera:'Comercio Internacional',nombre:'Juliana Laverde Montero',cc:'1031644367',email:'Juliana.laverde01@usa.edu.co',email2:'',celular:'3124856559',pago:'OK',plan:'Ropa Deportiva',mentor:'Valentina Osorio',emailMentor:'contacto@valentinaosoriou.com',contactoMentor:'3163779445',reuniones:2,especialista:'ADRIANA CORREA',notas:'',sust:{cr:17,nota:4.3,comentario:'FELICITAR POR HABER ACEPTADO LAS RECOMENDACIONES Y PROYECTARSE A APLICAR SU CARRERA EN VARIOS SECTORES DE EMPRENDIMIENTO',estado:'sustentado'}},
+  {n:42,equipo:null,carta:'SI',descuento:null,recibo:'5000119565',cancelado:'SI',costo:null,grupo:null,sede:null,carrera:null,nombre:'Nicolas Leal García',cc:'1019144871',email:'Nicolaslealgarcia36@gmail.com',email2:'',celular:'3045967585',pago:'OK',plan:null,mentor:null,emailMentor:null,contactoMentor:null,reuniones:0,especialista:null,notas:'',sust:{cr:null,nota:null,comentario:'',estado:''}},
+  {n:43,equipo:null,carta:null,descuento:null,recibo:'5000119566',cancelado:'SI',costo:null,grupo:null,sede:null,carrera:null,nombre:'Manuel Felipe Molina Rivera',cc:'1000241601',email:'Maomolina-10@hotmail.com',email2:'',celular:'3209084643',pago:'OK',plan:null,mentor:null,emailMentor:null,contactoMentor:null,reuniones:0,especialista:null,notas:'',sust:{cr:null,nota:null,comentario:'',estado:''}},
+  {n:44,equipo:26,carta:null,descuento:null,recibo:'5000119691',cancelado:'SI',costo:'V',grupo:'Sábado',sede:'Bogotá',carrera:'Administración de Empresas',nombre:'Sebastián Urrego Mancilla',cc:'1192810231',email:'sebastian.urrego01@usa.edu.co',email2:'',celular:'3155159112',pago:'OK',plan:'Urman',mentor:'Jairo Duarte',emailMentor:'jairo.duarte@contablesjds.com',contactoMentor:'3102658474',reuniones:3,especialista:'PAULA MARGARITA',notas:'',sust:{cr:20,nota:4.6,comentario:'FELICITARLO POR SU ESFUERZO E INVOLUCRAR SU EMPRENDIMIENTO FAMILIAR QUE CUENTA CON NOSOTROS PARA EL DESARROLLO DE SU NEGOCIO',estado:'sustentado'}},
+  {n:45,equipo:27,carta:null,descuento:null,recibo:'5000119708',cancelado:'SI',costo:'V',grupo:'Sábado',sede:'Bogotá',carrera:'Moda',nombre:'Laura Sofía Caro Macías',cc:'1012329702',email:'laura.caro03@usa.edu.co',email2:'',celular:'3045263634',pago:'OK',plan:'GREENGLOW',mentor:'Adriana Machuca',emailMentor:'adrianapmachuca@gmail.com',contactoMentor:'3016384186',reuniones:0,especialista:'ADRIANA CACERES',notas:'',sust:{cr:21,nota:4.8,comentario:'FELICITARLA POR AJUSTARSE A LAS RECOMENDACIONES, POR LA APLICACIÓN DE TEMAS TENDENCIA DE SU CARRERA Y SU DEDICACIÓN PARA HACER UN PROYECTO SOSTENIBLE, ES UN GRAN EJEMPLO DE INNOVACIÓN EN NEGOCIOS SOSTENIBLES Y SU EXCELENTE ACTITUD EMPRENDEDORA',estado:'sustentado'}},
+];
+
+// ─── STATE ────────────────────────────────────────────────────────────────
+let DATA = [];
+let currentView = 'table';
+let currentFilters = {sede:'',rol:'',pago:'',carta:'',grupo:'',sust:''};
+let currentMentor = '';
+let currentEsp = '';
+let currentSearch = '';
+let sortCol = 'n';
+let sortDir = 1;
+let editingCC = null;
+let activeTab = 'tab-info';
+const STORAGE_KEY = 'tse2025_crm_v3';
+
+function normalizeData(d) {
+  d._sede = (() => {
+    const s = (d.sede||'').trim().toLowerCase();
+    if (s==='bogota'||s==='bogotá') return 'Bogotá';
+    if (s==='barranquilla') return 'Barranquilla';
+    return d.sede ? d.sede.trim() : '';
+  })();
+  if (!d.reuniones) d.reuniones = 0;
+  if (!d.notas) d.notas = '';
+  if (!d.email2) d.email2 = '';
+  if (!d.sust) d.sust = {cr:null,nota:null,comentario:'',estado:''};
+  if (!d.sust.comentario) d.sust.comentario = '';
+  if (!d.sust.estado) d.sust.estado = '';
+  return d;
+}
+
+function loadData() {
+  try {
+    const s = localStorage.getItem(STORAGE_KEY);
+    if (s) { DATA = JSON.parse(s).map(normalizeData); showToast('✓ Datos cargados'); }
+    else { DATA = INIT_DATA.map(d=>({...d, sust:{...d.sust}})).map(normalizeData); }
+  } catch(e) { DATA = INIT_DATA.map(d=>({...d, sust:{...d.sust}})).map(normalizeData); }
+}
+function saveData() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(DATA)); } catch(e){} }
+
+// ─── TOAST ────────────────────────────────────────────────────────────────
+let toastTimer;
+function showToast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.innerHTML = msg; t.className = 'toast show' + (type?' '+type:'');
+  clearTimeout(toastTimer); toastTimer = setTimeout(()=>{t.className='toast';},3000);
+}
+
+// ─── STATS ────────────────────────────────────────────────────────────────
+function renderStats() {
+  const total = DATA.length;
+  const equipos = [...new Set(DATA.map(d=>d.equipo).filter(Boolean))].length;
+  const pagoOK = DATA.filter(d=>d.pago==='OK').length;
+  const devs = DATA.filter(d=>d.pago==='DEVOLUCIÓN DE DINERO').length;
+  const cartas = DATA.filter(d=>d.carta==='SI').length;
+  const bog = DATA.filter(d=>d._sede==='Bogotá').length;
+  const baq = DATA.filter(d=>d._sede==='Barranquilla').length;
+  const conNota = DATA.filter(d=>d.sust&&d.sust.nota!==null).length;
+  const notas = DATA.filter(d=>d.sust&&d.sust.nota!==null).map(d=>d.sust.nota);
+  const promedio = notas.length ? (notas.reduce((a,b)=>a+b,0)/notas.length).toFixed(2) : '—';
+
+  const items = [
+    {val:total,label:'Participantes',icon:'👥',bg:'#fee8e8',color:'#C8102E'},
+    {val:equipos,label:'Equipos',icon:'🏆',bg:'#fef3d8',color:'#B8960C'},
+    {val:pagoOK,label:'Pagos OK',icon:'✅',bg:'#d4eddf',color:'#1a7a4a'},
+    {val:devs,label:'Devoluciones',icon:'⚠️',bg:'#fef3d8',color:'#92600a'},
+    {val:cartas,label:'Cartas',icon:'📝',bg:'#dbe8fc',color:'#1a4fa0'},
+    {val:bog,label:'Bogotá',icon:'🏙',bg:'#e8f0fe',color:'#1a4fa0'},
+    {val:baq,label:'Barranquilla',icon:'🌊',bg:'#e6f4ea',color:'#1a7a4a'},
+    {val:conNota,label:'Sustentados',icon:'⭐',bg:'#ede9fe',color:'#5b21b6'},
+    {val:promedio,label:'Promedio nota',icon:'📊',bg:'#ede9fe',color:'#5b21b6'},
+  ];
+  document.getElementById('statbar').innerHTML = items.map(s=>`
+    <div class="stat-item">
+      <div class="stat-icon" style="background:${s.bg}">${s.icon}</div>
+      <div><div class="stat-val" style="color:${s.color}">${s.val}</div><div class="stat-label">${s.label}</div></div>
+    </div>`).join('');
+}
+
+// ─── SELECTS ──────────────────────────────────────────────────────────────
+function populateSelects() {
+  const mentors = [...new Set(DATA.map(d=>d.mentor).filter(Boolean))].sort();
+  const mSel = document.getElementById('mentorFilter'); const curM = mSel.value;
+  mSel.innerHTML = '<option value="">Todos los mentores</option>' + mentors.map(m=>`<option value="${m}"${m===curM?' selected':''}>${m}</option>`).join('');
+  const esps = [...new Set(DATA.map(d=>d.especialista).filter(Boolean))].sort();
+  const eSel = document.getElementById('especialistaFilter'); const curE = eSel.value;
+  eSel.innerHTML = '<option value="">Todos los especialistas</option>' + esps.map(e=>`<option value="${e}"${e===curE?' selected':''}>${e}</option>`).join('');
+}
+
+function setFilter(k,v) {
+  currentFilters[k]=v;
+  document.querySelectorAll('.filter-pill').forEach(b=>{
+    const oc=b.getAttribute('onclick')||'';
+    if(oc===`setFilter('${k}','${v}')`) b.classList.add('active');
+    else if(oc.startsWith(`setFilter('${k}'`)) b.classList.remove('active');
+  });
+  render();
+}
+function setMentorFilter(v){currentMentor=v;render();}
+function setEspecialistaFilter(v){currentEsp=v;render();}
+
+function getFiltered() {
+  return DATA.filter(d=>{
+    if(currentSearch){
+      const q=currentSearch.toLowerCase();
+      const hay=[d.nombre,d.cc,d.email,d.email2,d.plan,d.mentor,d.especialista,d.carrera,d.recibo,d.notas,(d.sust&&d.sust.comentario)||''].join(' ').toLowerCase();
+      if(!hay.includes(q)) return false;
+    }
+    if(currentFilters.sede==='Bogotá'&&d._sede!=='Bogotá') return false;
+    if(currentFilters.sede==='Barranquilla'&&d._sede!=='Barranquilla') return false;
+    if(currentFilters.rol==='equipo'&&!d.equipo) return false;
+    if(currentFilters.rol==='sin'&&d.equipo) return false;
+    if(currentFilters.pago==='OK'&&d.pago!=='OK') return false;
+    if(currentFilters.pago==='DEV'&&d.pago!=='DEVOLUCIÓN DE DINERO') return false;
+    if(currentFilters.carta==='SI'&&d.carta!=='SI') return false;
+    if(currentFilters.carta==='NO'&&d.carta==='SI') return false;
+    if(currentFilters.grupo==='Viernes'&&(d.grupo||'').trim()!=='Viernes') return false;
+    if(currentFilters.grupo==='Sábado'&&(d.grupo||'').trim()!=='Sábado') return false;
+    if(currentFilters.sust==='si'&&(!d.sust||d.sust.nota===null)) return false;
+    if(currentFilters.sust==='no'&&d.sust&&d.sust.nota!==null) return false;
+    if(currentMentor&&d.mentor!==currentMentor) return false;
+    if(currentEsp&&d.especialista!==currentEsp) return false;
+    return true;
+  });
+}
+
+function getSorted(arr) {
+  return [...arr].sort((a,b)=>{
+    let av=a[sortCol]??'', bv=b[sortCol]??'';
+    if(sortCol==='sede'){av=a._sede;bv=b._sede;}
+    if(sortCol==='sustNota'){av=a.sust?.nota??-1;bv=b.sust?.nota??-1;}
+    if(av===bv) return 0;
+    return av>bv?sortDir:-sortDir;
+  });
+}
+
+// ─── HELPERS ──────────────────────────────────────────────────────────────
+function initials(n){return(n||'').split(' ').filter(Boolean).slice(0,2).map(w=>w[0]||'').join('').toUpperCase();}
+function sedeBadge(s){if(!s)return'';if(s==='Bogotá')return`<span class="badge badge-bog">🏙 Bogotá</span>`;if(s==='Barranquilla')return`<span class="badge badge-baq">🌊 Barranquilla</span>`;return`<span class="badge badge-miembro">${s}</span>`;}
+function pagoBadge(p){if(p==='OK')return`<span class="badge badge-ok">✅ OK</span>`;if(p==='DEVOLUCIÓN DE DINERO')return`<span class="badge badge-dev">⚠️ Devolución</span>`;return`<span style="color:var(--gris-med);font-size:0.75rem">—</span>`;}
+function cartaBadge(c){return c==='SI'?`<span class="badge badge-ok">📝 Sí</span>`:`<span class="badge badge-no">❌ No</span>`;}
+
+function notaChip(nota) {
+  if(nota===null||nota===undefined) return `<span class="nota-chip nota-pend">—</span>`;
+  const cls = nota>=4.5?'nota-alta':nota>=4.0?'nota-media':'nota-baja';
+  return `<span class="nota-chip ${cls}">${nota.toFixed(1)}</span>`;
+}
+
+function starsFromNota(nota) {
+  if(!nota) return '';
+  const full = Math.floor(nota/1);
+  const half = nota%1>=0.5;
+  return '★'.repeat(Math.min(full,5))+(half&&full<5?'½':'');
+}
+
+function notaColor(nota) {
+  if(!nota) return '#888';
+  return nota>=4.5?'#1a7a4a':nota>=4.0?'#1a4fa0':'#92600a';
+}
+
+// ─── TABLE ────────────────────────────────────────────────────────────────
+function renderTable(arr) {
+  const tb = document.getElementById('tableBody');
+  if(!arr.length){tb.innerHTML=`<tr><td colspan="15"><div class="empty"><div class="empty-icon">🔍</div><div>Sin resultados</div></div></td></tr>`;return;}
+  tb.innerHTML = arr.map(d=>`
+    <tr>
+      <td style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:var(--gris-med)">${d.n??'—'}</td>
+      <td>${d.equipo?`<span class="badge badge-equipo">Eq. ${d.equipo}</span>`:`<span class="badge badge-miembro">Sin eq.</span>`}</td>
+      <td><span style="font-weight:600;cursor:pointer;color:var(--negro)" onclick="openDetail('${d.cc}')">${d.nombre}</span></td>
+      <td style="font-family:'IBM Plex Mono',monospace;font-size:0.76rem;color:var(--gris-med)">${d.cc}</td>
+      <td style="max-width:150px;white-space:normal;font-size:0.77rem;color:var(--gris-med)">${d.carrera||'—'}</td>
+      <td>${sedeBadge(d._sede)||'<span style="color:var(--gris-med)">—</span>'}</td>
+      <td style="font-size:0.78rem;color:var(--gris-med)">${(d.grupo||'—').trim()}</td>
+      <td>${pagoBadge(d.pago)}</td>
+      <td>${cartaBadge(d.carta)}</td>
+      <td style="max-width:140px;white-space:normal;font-size:0.78rem;font-weight:500">${d.plan||'<span style="color:var(--gris-med)">—</span>'}</td>
+      <td>${notaChip(d.sust?.nota??null)}</td>
+      <td style="font-size:0.78rem">${d.mentor||'<span style="color:var(--gris-med)">—</span>'}</td>
+      <td style="font-size:0.78rem">${d.especialista||'<span style="color:var(--gris-med)">—</span>'}</td>
+      <td style="text-align:center">${d.reuniones>0?`<span class="badge badge-gold">${d.reuniones}</span>`:`<span style="color:var(--gris-med);font-size:0.75rem">0</span>`}</td>
+      <td>
+        <div class="action-row">
+          <button class="btn btn-sm" style="background:var(--azul-bg);color:var(--azul);border:none;padding:4px 10px" onclick="openDetail('${d.cc}')">✏️ Editar</button>
+          <button class="copy-btn" onclick="copyText('${d.email}',this)" title="Copiar email">📋</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+// ─── CARDS ────────────────────────────────────────────────────────────────
+function renderCards(arr) {
+  const c = document.getElementById('cardsContainer');
+  if(!arr.length){c.innerHTML=`<div class="empty"><div class="empty-icon">🔍</div><div>Sin resultados</div></div>`;return;}
+  c.innerHTML = arr.map(d=>`
+    <div class="pcard" onclick="openDetail('${d.cc}')">
+      <div class="pcard-stripe"></div>
+      <div class="pcard-top">
+        <div>
+          <div class="pcard-name">${d.nombre}</div>
+          <div class="pcard-sub">${d.carrera||(d.n?`N° ${d.n}`:'Sin carrera')} · ${d.recibo?`Rec. ${d.recibo}`:'Sin recibo'}</div>
+        </div>
+        <div class="pcard-badges">
+          ${d.equipo?`<span class="badge badge-equipo">Equipo ${d.equipo}</span>`:'<span class="badge badge-miembro">Sin equipo</span>'}
+          ${pagoBadge(d.pago)}
+        </div>
+      </div>
+      <div class="pcard-row"><span class="pcard-icon">📧</span><a href="mailto:${d.email}" onclick="event.stopPropagation()">${d.email}</a></div>
+      <div class="pcard-row"><span class="pcard-icon">📱</span><span>${d.celular}</span></div>
+      ${d.plan?`<div class="pcard-row"><span class="pcard-icon">💡</span><span style="font-weight:600">${d.plan}</span></div>`:''}
+      ${d.mentor?`<div class="pcard-row"><span class="pcard-icon">🎯</span><span>${d.mentor}</span></div>`:''}
+      ${d.notas?`<div class="pcard-row"><span class="pcard-icon">📌</span><span style="font-size:0.76rem;color:var(--amber)">${d.notas}</span></div>`:''}
+      ${d.sust&&d.sust.nota!==null?`
+      <div class="sust-mini">
+        <div class="sust-mini-nota">${d.sust.nota.toFixed(1)}</div>
+        <div class="sust-mini-comment">${d.sust.comentario?d.sust.comentario.slice(0,100)+(d.sust.comentario.length>100?'…':''):'Sin comentario'}</div>
+      </div>`:''}
+      <div class="pcard-pills">
+        ${sedeBadge(d._sede)}
+        ${d.grupo?`<span class="badge badge-miembro">${d.grupo.trim()}</span>`:''}
+        ${cartaBadge(d.carta)}
+        ${d.especialista?`<span class="badge" style="background:#f0f0f8;color:#6060aa">${d.especialista}</span>`:''}
+        ${d.reuniones>0?`<span class="badge badge-gold">🤝 ${d.reuniones}</span>`:''}
+        ${d.sust&&d.sust.estado?`<span class="badge badge-sust">⭐ ${d.sust.estado==='no_sustentacion'?'No sustentó':d.sust.estado==='enero'?'Enero':'Sustentado'}</span>`:''}
+      </div>
+    </div>`).join('');
+}
+
+// ─── TEAMS ────────────────────────────────────────────────────────────────
+function renderTeams() {
+  const c = document.getElementById('teamsContainer');
+  const teamNums = [...new Set(DATA.filter(d=>d.equipo).map(d=>d.equipo))].sort((a,b)=>a-b);
+  if(!teamNums.length){c.innerHTML=`<div class="empty"><div class="empty-icon">👥</div><div>Sin equipos</div></div>`;return;}
+  c.innerHTML = teamNums.map(eq=>{
+    const lead = DATA.find(d=>d.equipo===eq);
+    if(!lead) return '';
+    const li = DATA.indexOf(lead);
+    const ni = DATA.findIndex((d,i)=>i>li&&d.equipo&&d.equipo!==eq);
+    const members = DATA.slice(li+1,ni===-1?DATA.length:ni).filter(d=>!d.equipo);
+    const all = [lead,...members];
+    const totalReu = all.reduce((s,m)=>s+(parseInt(m.reuniones)||0),0);
+    const sust = lead.sust;
+
+    return `<div class="tcard" id="tcard-${eq}">
+      <div class="tcard-header" onclick="toggleTeam(${eq})">
+        <div class="tcard-num">${eq}</div>
+        <div class="tcard-info">
+          <div class="tcard-title">${lead.plan||`Equipo ${eq}`}</div>
+          <div class="tcard-meta">${lead._sede||'?'} · ${(lead.grupo||'?').trim()} · ${lead.carrera||'?'}</div>
+        </div>
+        <div class="tcard-right">
+          ${pagoBadge(lead.pago)}
+          ${cartaBadge(lead.carta)}
+          ${sust&&sust.nota!==null?notaChip(sust.nota):'<span class="nota-chip nota-pend">Sin nota</span>'}
+          <span class="badge badge-miembro">👤 ${all.length}</span>
+          ${totalReu>0?`<span class="badge badge-gold">🤝 ${totalReu}</span>`:''}
+          <span class="chevron">▼</span>
+        </div>
+      </div>
+      <div class="tcard-body">
+        ${all.map((m,i)=>`
+          <div class="mrow" onclick="openDetail('${m.cc}')">
+            <div class="avatar">${initials(m.nombre)}</div>
+            <div class="mrow-info">
+              <div class="mrow-name">${m.nombre} ${i===0?'<span class="badge badge-equipo" style="font-size:0.62rem;padding:1px 7px">Líder</span>':''}</div>
+              <div class="mrow-email">${m.email}${m.email2?' · '+m.email2:''} · ${m.celular}</div>
+            </div>
+            ${m.reuniones>0?`<span class="badge badge-gold">🤝 ${m.reuniones}</span>`:''}
+            ${m.carta==='SI'?'<span class="badge badge-ok" style="font-size:0.62rem">📝</span>':''}
+          </div>`).join('')}
+        ${lead.mentor?`
+        <div class="mentor-strip">
+          <div class="avatar avatar-mentor">${initials(lead.mentor)}</div>
+          <div>
+            <div class="mentor-strip-label">Mentor asignado</div>
+            <div class="mentor-strip-name">${lead.mentor}</div>
+            <div class="mentor-strip-meta">${lead.emailMentor||''} ${lead.contactoMentor?'· '+lead.contactoMentor:''}</div>
+          </div>
+          ${lead.especialista?`<div style="margin-left:auto;text-align:right"><div class="mentor-strip-label">Especialista</div><div style="font-size:0.82rem;font-weight:600;color:var(--negro)">${lead.especialista}</div></div>`:''}
+        </div>`:''}
+        ${sust?`
+        <div class="sust-block">
+          <div class="sust-block-header">
+            <div>
+              <div class="sust-block-label">⭐ Sustentación · CR ${sust.cr||'—'}</div>
+              <div style="display:flex;align-items:baseline;gap:8px;margin-top:2px">
+                <div class="sust-block-nota">${sust.nota!==null?sust.nota.toFixed(1):'Sin nota'}</div>
+                ${sust.nota?`<div class="sust-block-stars" style="color:${notaColor(sust.nota)}">${starsFromNota(sust.nota)}</div>`:''}
+                ${sust.estado?`<span class="badge badge-sust" style="font-size:0.62rem">${sust.estado==='no_sustentacion'?'No sustentó':sust.estado==='enero'?'Enero':'OK'}</span>`:''}
+              </div>
+            </div>
+          </div>
+          ${sust.comentario?`<div class="sust-block-comment">${sust.comentario}</div>`:'<div class="sust-block-comment" style="color:#999;font-style:italic">Sin comentario del jurado</div>'}
+        </div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleTeam(eq){document.getElementById('tcard-'+eq).classList.toggle('open');}
+
+// ─── MODAL TABS ───────────────────────────────────────────────────────────
+function switchTab(tabId) {
+  activeTab = tabId;
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.modal-tab').forEach(b=>b.classList.remove('active'));
+  const pane = document.getElementById(tabId);
+  if(pane) pane.classList.add('active');
+  document.querySelectorAll('.modal-tab').forEach(b=>{
+    if(b.getAttribute('onclick')===`switchTab('${tabId}')`) b.classList.add('active');
+  });
+}
+
+// ─── DETAIL / EDIT MODAL ──────────────────────────────────────────────────
+function openDetail(cc) {
+  const d = DATA.find(x=>x.cc===cc);
+  if(!d) return;
+  editingCC = cc;
+  const sust = d.sust || {};
+
+  document.getElementById('mTitle').textContent = d.nombre;
+  document.getElementById('mSub').textContent = `C.C. ${d.cc} · Recibo: ${d.recibo||'Sin recibo'} · N° ${d.n||'S/N'}`;
+
+  const mentorOpts = [...new Set(DATA.map(x=>x.mentor).filter(Boolean))].sort().map(m=>`<option value="${m}"${d.mentor===m?' selected':''}>${m}</option>`).join('');
+  const espOpts = [...new Set(DATA.map(x=>x.especialista).filter(Boolean))].sort().map(e=>`<option value="${e}"${d.especialista===e?' selected':''}>${e}</option>`).join('');
+
+  const notaPct = sust.nota ? Math.round((sust.nota/5)*100) : 0;
+
+  document.getElementById('mBody').innerHTML = `
+    <!-- TAB: Información -->
+    <div class="tab-pane active" id="tab-info">
+      <div class="modal-section">
+        <div class="modal-section-title">📋 Información básica</div>
+        <div class="form-grid">
+          <div class="form-field full"><label>Nombre completo *</label><input id="e_nombre" value="${d.nombre||''}"></div>
+          <div class="form-field"><label>C.C. (no editable)</label><div class="read-only">${d.cc} <button class="copy-btn" onclick="copyText('${d.cc}',this)">Copiar</button></div></div>
+          <div class="form-field"><label>Carrera / Programa</label><input id="e_carrera" value="${d.carrera||''}" placeholder="Ingeniería Industrial..."></div>
+        </div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">📞 Contacto</div>
+        <div class="form-grid">
+          <div class="form-field"><label>Email principal *</label><input id="e_email" type="email" value="${d.email||''}"></div>
+          <div class="form-field"><label>Email alternativo</label><input id="e_email2" type="email" value="${d.email2||''}"></div>
+          <div class="form-field"><label>Celular *</label><input id="e_celular" value="${d.celular||''}"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: Programa -->
+    <div class="tab-pane" id="tab-programa">
+      <div class="modal-section">
+        <div class="modal-section-title">🎓 Programa TSE</div>
+        <div class="form-grid cols-3">
+          <div class="form-field"><label>Sede</label><select id="e_sede"><option value="">Sin sede</option><option value="Bogotá"${d._sede==='Bogotá'?' selected':''}>Bogotá</option><option value="Barranquilla"${d._sede==='Barranquilla'?' selected':''}>Barranquilla</option></select></div>
+          <div class="form-field"><label>Grupo / Día</label><select id="e_grupo"><option value="">Sin asignar</option><option value="Viernes"${(d.grupo||'').trim()==='Viernes'?' selected':''}>Viernes</option><option value="Sábado"${(d.grupo||'').trim()==='Sábado'?' selected':''}>Sábado</option></select></div>
+          <div class="form-field"><label>Centro de costo</label><select id="e_costo"><option value="">—</option><option value="V"${d.costo==='V'?' selected':''}>V</option><option value="S"${d.costo==='S'?' selected':''}>S</option></select></div>
+          <div class="form-field"><label>N° Equipo</label><input id="e_equipo" type="number" min="1" value="${d.equipo||''}"></div>
+          <div class="form-field"><label>Plan de negocio</label><input id="e_plan" value="${d.plan||''}"></div>
+          <div class="form-field"><label>Total reuniones</label><input id="e_reuniones" type="number" min="0" value="${d.reuniones||0}"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: Pago -->
+    <div class="tab-pane" id="tab-pago">
+      <div class="modal-section">
+        <div class="modal-section-title">💳 Estado de pago</div>
+        <div class="form-grid">
+          <div class="form-field"><label>N° Recibo</label><input id="e_recibo" value="${d.recibo||''}"></div>
+          <div class="form-field"><label>Estado del pago</label><select id="e_pago"><option value="OK"${d.pago==='OK'?' selected':''}>✅ OK</option><option value="DEVOLUCIÓN DE DINERO"${d.pago==='DEVOLUCIÓN DE DINERO'?' selected':''}>⚠️ Devolución</option><option value=""${!d.pago?' selected':''}>— Pendiente</option></select></div>
+          <div class="form-field"><label>Cancelado</label><select id="e_cancelado"><option value="SI"${d.cancelado==='SI'?' selected':''}>SI</option><option value=""${d.cancelado!=='SI'?' selected':''}>NO / Pendiente</option></select></div>
+          <div class="form-field"><label>Carta compromiso</label><select id="e_carta"><option value="SI"${d.carta==='SI'?' selected':''}>✅ Entregada</option><option value=""${d.carta!=='SI'?' selected':''}>❌ Pendiente</option></select></div>
+          <div class="form-field"><label>Descuento</label><select id="e_descuento"><option value="SI"${d.descuento==='SI'?' selected':''}>SI</option><option value=""${d.descuento!=='SI'?' selected':''}>NO</option></select></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: Mentor -->
+    <div class="tab-pane" id="tab-mentor">
+      <div class="modal-section">
+        <div class="modal-section-title">🎯 Mentor y Especialista</div>
+        <div class="form-grid">
+          <div class="form-field"><label>Mentor</label><input id="e_mentor" list="mentores-list" value="${d.mentor||''}"><datalist id="mentores-list">${mentorOpts}</datalist></div>
+          <div class="form-field"><label>Email del mentor</label><input id="e_emailMentor" type="email" value="${d.emailMentor||''}"></div>
+          <div class="form-field"><label>Celular mentor</label><input id="e_contactoMentor" value="${d.contactoMentor||''}"></div>
+          <div class="form-field"><label>Especialista / Revisión previa</label><input id="e_especialista" list="esp-list" value="${d.especialista||''}"><datalist id="esp-list">${espOpts}</datalist></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: Sustentación ⭐ -->
+    <div class="tab-pane" id="tab-sust">
+      ${sust.nota!==null?`
+      <div class="nota-display">
+        <div>
+          <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--purple);font-weight:600;margin-bottom:2px">Nota final</div>
+          <div class="nota-big">${sust.nota.toFixed(1)}</div>
+          <div class="nota-stars-big" style="color:${notaColor(sust.nota)}">${starsFromNota(sust.nota)}</div>
+        </div>
+        <div class="nota-bar-wrap">
+          <div class="nota-bar-label">Desempeño (sobre 5.0)</div>
+          <div class="nota-bar"><div class="nota-bar-fill" style="width:${notaPct}%"></div></div>
+          <div style="font-size:0.72rem;color:var(--purple);margin-top:4px">${notaPct}% del máximo</div>
+        </div>
+      </div>`:`
+      <div style="background:#f8f8f8;border:1px dashed #ccc;border-radius:8px;padding:16px;text-align:center;color:var(--gris-med);margin-bottom:16px;font-size:0.85rem">
+        ⭐ Este participante / equipo aún no tiene nota de sustentación registrada
+      </div>`}
+      <div class="modal-section">
+        <div class="modal-section-title">⭐ Datos de sustentación</div>
+        <div class="form-grid">
+          <div class="form-field"><label>N° CR (correlativo PDF)</label><input id="e_sust_cr" type="number" min="1" value="${sust.cr||''}" placeholder="1-28"></div>
+          <div class="form-field"><label>Nota final (0.0 – 5.0)</label><input id="e_sust_nota" type="number" step="0.1" min="0" max="5" value="${sust.nota??''}" placeholder="4.5" oninput="previewNota(this.value)"></div>
+          <div class="form-field"><label>Estado de sustentación</label>
+            <select id="e_sust_estado">
+              <option value=""${!sust.estado?' selected':''}>— Sin estado</option>
+              <option value="sustentado"${sust.estado==='sustentado'?' selected':''}>✅ Sustentado</option>
+              <option value="no_sustentacion"${sust.estado==='no_sustentacion'?' selected':''}>❌ No sustentó</option>
+              <option value="enero"${sust.estado==='enero'?' selected':''}>📅 Sustentó en Enero</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-top:10px" id="notaPreview"></div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">💬 Comentario del jurado / coordinadora</div>
+        <div class="form-field">
+          <label>Comentario / retroalimentación</label>
+          <textarea id="e_sust_comentario" rows="5" placeholder="Ej: FELICITARLOS PORQUE ES UN TEMA TENDENCIA Y DE ALTO IMPACTO...">${sust.comentario||''}</textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: Notas -->
+    <div class="tab-pane" id="tab-notas">
+      <div class="modal-section">
+        <div class="modal-section-title">📌 Notas internas de la coordinadora</div>
+        <div class="form-field">
+          <label>Observaciones / seguimiento</label>
+          <textarea id="e_notas" rows="6" placeholder="Ej: Pendiente carta compromiso, llamar esta semana...">${d.notas||''}</textarea>
+        </div>
+      </div>
+    </div>
+  `;
+
+  switchTab('tab-info');
+  document.getElementById('modalBackdrop').classList.add('open');
+}
+
+function previewNota(val) {
+  const n = parseFloat(val);
+  const prev = document.getElementById('notaPreview');
+  if(!prev) return;
+  if(isNaN(n)||n<0||n>5){prev.innerHTML='';return;}
+  const pct = Math.round((n/5)*100);
+  const color = n>=4.5?'#1a7a4a':n>=4.0?'#1a4fa0':'#92600a';
+  prev.innerHTML = `<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--purple-bg);border-radius:8px">
+    <span style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--purple)">${n.toFixed(1)}</span>
+    <div style="flex:1"><div style="height:6px;background:#ddd6fe;border-radius:3px;overflow:hidden"><div style="height:100%;width:${pct}%;background:linear-gradient(90deg,var(--purple),#7c3aed);border-radius:3px"></div></div></div>
+    <span style="font-size:0.78rem;color:${color};font-weight:600">${starsFromNota(n)}</span>
+  </div>`;
+}
+
+function saveParticipant() {
+  const idx = DATA.findIndex(d=>d.cc===editingCC);
+  if(idx===-1) return;
+
+  const eq = document.getElementById('e_equipo')?.value.trim();
+  const notaRaw = document.getElementById('e_sust_nota')?.value;
+  const nota = notaRaw!==''&&notaRaw!==null&&notaRaw!==undefined ? parseFloat(notaRaw) : null;
+  const crRaw = document.getElementById('e_sust_cr')?.value;
+  const sideSel = document.getElementById('e_sede')?.value;
+
+  DATA[idx] = {
+    ...DATA[idx],
+    nombre: document.getElementById('e_nombre')?.value.trim() || DATA[idx].nombre,
+    carrera: document.getElementById('e_carrera')?.value.trim() || null,
+    email: document.getElementById('e_email')?.value.trim() || DATA[idx].email,
+    email2: document.getElementById('e_email2')?.value.trim() || '',
+    celular: document.getElementById('e_celular')?.value.trim() || DATA[idx].celular,
+    sede: sideSel||'', _sede: sideSel||'',
+    grupo: document.getElementById('e_grupo')?.value || '',
+    costo: document.getElementById('e_costo')?.value || '',
+    equipo: eq ? parseInt(eq) : null,
+    plan: document.getElementById('e_plan')?.value.trim() || null,
+    reuniones: parseInt(document.getElementById('e_reuniones')?.value)||0,
+    recibo: document.getElementById('e_recibo')?.value.trim() || null,
+    pago: document.getElementById('e_pago')?.value || '',
+    cancelado: document.getElementById('e_cancelado')?.value || '',
+    carta: document.getElementById('e_carta')?.value || null,
+    descuento: document.getElementById('e_descuento')?.value || null,
+    mentor: document.getElementById('e_mentor')?.value.trim() || null,
+    emailMentor: document.getElementById('e_emailMentor')?.value.trim() || null,
+    contactoMentor: document.getElementById('e_contactoMentor')?.value.trim() || null,
+    especialista: document.getElementById('e_especialista')?.value.trim() || null,
+    notas: document.getElementById('e_notas')?.value.trim() || '',
+    sust: {
+      cr: crRaw ? parseInt(crRaw) : null,
+      nota: (nota!==null&&!isNaN(nota)) ? nota : null,
+      comentario: document.getElementById('e_sust_comentario')?.value.trim() || '',
+      estado: document.getElementById('e_sust_estado')?.value || '',
+    }
+  };
+  normalizeData(DATA[idx]);
+  saveData();
+  closeModal('modalBackdrop');
+  renderStats(); populateSelects(); render();
+  showToast('✓ Cambios guardados correctamente');
+}
+
+function deleteParticipant() {
+  const d = DATA.find(x=>x.cc===editingCC);
+  if(!d) return;
+  if(!confirm(`¿Eliminar a ${d.nombre}? Esta acción no se puede deshacer.`)) return;
+  DATA = DATA.filter(x=>x.cc!==editingCC);
+  saveData(); closeModal('modalBackdrop');
+  renderStats(); populateSelects(); render();
+  showToast('🗑 Participante eliminado','error');
+}
+
+// ─── ADD PARTICIPANT ──────────────────────────────────────────────────────
+function openAddModal() {
+  document.getElementById('addBody').innerHTML = `
+    <div class="modal-section"><div class="modal-section-title">📋 Datos básicos</div>
+      <div class="form-grid">
+        <div class="form-field full"><label>Nombre completo *</label><input id="a_nombre" placeholder="Nombre completo"></div>
+        <div class="form-field"><label>C.C. *</label><input id="a_cc" placeholder="1000000000"></div>
+        <div class="form-field"><label>Carrera</label><input id="a_carrera" placeholder="Ingeniería Industrial"></div>
+        <div class="form-field"><label>Email *</label><input id="a_email" type="email" placeholder="correo@usa.edu.co"></div>
+        <div class="form-field"><label>Email alternativo</label><input id="a_email2" type="email" placeholder="correo@gmail.com"></div>
+        <div class="form-field"><label>Celular *</label><input id="a_celular" placeholder="3001234567"></div>
+      </div>
+    </div>
+    <div class="modal-section"><div class="modal-section-title">🎓 Programa TSE</div>
+      <div class="form-grid cols-3">
+        <div class="form-field"><label>Sede</label><select id="a_sede"><option value="">Sin sede</option><option value="Bogotá">Bogotá</option><option value="Barranquilla">Barranquilla</option></select></div>
+        <div class="form-field"><label>Grupo / Día</label><select id="a_grupo"><option value="">Sin asignar</option><option value="Viernes">Viernes</option><option value="Sábado">Sábado</option></select></div>
+        <div class="form-field"><label>N° Equipo</label><input id="a_equipo" type="number" min="1" placeholder="Ej: 5"></div>
+        <div class="form-field"><label>Plan de negocio</label><input id="a_plan" placeholder="Nombre del proyecto"></div>
+        <div class="form-field"><label>Recibo</label><input id="a_recibo" placeholder="5000119000"></div>
+        <div class="form-field"><label>Estado pago</label><select id="a_pago"><option value="OK">✅ OK</option><option value="DEVOLUCIÓN DE DINERO">⚠️ Devolución</option><option value="">Pendiente</option></select></div>
+        <div class="form-field"><label>Carta compromiso</label><select id="a_carta"><option value="SI">✅ Entregada</option><option value="">❌ Pendiente</option></select></div>
+        <div class="form-field"><label>Centro de costo</label><select id="a_costo"><option value="">—</option><option value="V">V</option><option value="S">S</option></select></div>
+      </div>
+    </div>
+    <div class="modal-section"><div class="modal-section-title">⭐ Sustentación (opcional)</div>
+      <div class="form-grid">
+        <div class="form-field"><label>N° CR</label><input id="a_sust_cr" type="number" min="1" placeholder="1-28"></div>
+        <div class="form-field"><label>Nota (0–5)</label><input id="a_sust_nota" type="number" step="0.1" min="0" max="5" placeholder="4.5"></div>
+        <div class="form-field"><label>Estado</label><select id="a_sust_estado"><option value="">— Sin estado</option><option value="sustentado">✅ Sustentado</option><option value="no_sustentacion">❌ No sustentó</option><option value="enero">📅 Enero</option></select></div>
+        <div class="form-field full"><label>Comentario del jurado</label><textarea id="a_sust_comentario" rows="2" placeholder="Comentario..."></textarea></div>
+      </div>
+    </div>
+    <div class="modal-section"><div class="modal-section-title">🎯 Mentor</div>
+      <div class="form-grid">
+        <div class="form-field"><label>Mentor</label><input id="a_mentor" placeholder="Nombre del mentor"></div>
+        <div class="form-field"><label>Email mentor</label><input id="a_emailMentor" type="email" placeholder="mentor@email.com"></div>
+        <div class="form-field"><label>Celular mentor</label><input id="a_contactoMentor" placeholder="3001234567"></div>
+        <div class="form-field"><label>Especialista</label><input id="a_especialista" placeholder="Nombre del especialista"></div>
+      </div>
+    </div>
+    <div class="modal-section"><div class="modal-section-title">📌 Notas</div>
+      <div class="form-field"><label>Notas internas</label><textarea id="a_notas" rows="2" placeholder="Observaciones..."></textarea></div>
+    </div>
+  `;
+  document.getElementById('addBackdrop').classList.add('open');
+}
+
+function addParticipant() {
+  const nombre = document.getElementById('a_nombre').value.trim();
+  const cc = document.getElementById('a_cc').value.trim();
+  const email = document.getElementById('a_email').value.trim();
+  const celular = document.getElementById('a_celular').value.trim();
+  if(!nombre||!cc||!email||!celular){showToast('⚠️ Nombre, C.C., email y celular son requeridos','error');return;}
+  if(DATA.find(d=>d.cc===cc)){showToast('⚠️ Ya existe un participante con esa C.C.','error');return;}
+  const eq = document.getElementById('a_equipo').value.trim();
+  const maxN = Math.max(...DATA.map(d=>d.n||0),0)+1;
+  const sideSel = document.getElementById('a_sede').value;
+  const notaRaw = document.getElementById('a_sust_nota').value;
+  const nota = notaRaw!==''?parseFloat(notaRaw):null;
+  const crRaw = document.getElementById('a_sust_cr').value;
+
+  const newP = {
+    n:maxN, equipo:eq?parseInt(eq):null,
+    carta:document.getElementById('a_carta').value||null,
+    descuento:null, recibo:document.getElementById('a_recibo').value.trim()||null,
+    cancelado:'SI', costo:document.getElementById('a_costo').value,
+    grupo:document.getElementById('a_grupo').value, sede:sideSel, carrera:document.getElementById('a_carrera').value.trim()||null,
+    nombre, cc, email, email2:document.getElementById('a_email2').value.trim(),
+    celular, pago:document.getElementById('a_pago').value,
+    plan:document.getElementById('a_plan').value.trim()||null,
+    mentor:document.getElementById('a_mentor').value.trim()||null,
+    emailMentor:document.getElementById('a_emailMentor').value.trim()||null,
+    contactoMentor:document.getElementById('a_contactoMentor').value.trim()||null,
+    reuniones:0,
+    especialista:document.getElementById('a_especialista').value.trim()||null,
+    notas:document.getElementById('a_notas').value.trim(),
+    sust:{
+      cr:crRaw?parseInt(crRaw):null,
+      nota:(nota!==null&&!isNaN(nota))?nota:null,
+      comentario:document.getElementById('a_sust_comentario').value.trim(),
+      estado:document.getElementById('a_sust_estado').value,
+    }
+  };
+  normalizeData(newP);
+  DATA.push(newP);
+  saveData(); closeModal('addBackdrop');
+  renderStats(); populateSelects(); render();
+  showToast(`✓ ${nombre} agregado correctamente`);
+}
+
+// ─── SORT ─────────────────────────────────────────────────────────────────
+function sortBy(col) {
+  sortDir = sortCol===col?-sortDir:1; sortCol=col;
+  document.querySelectorAll('th').forEach(t=>t.classList.remove('sort-asc','sort-desc'));
+  const th = document.getElementById('th-'+col);
+  if(th) th.classList.add(sortDir===1?'sort-asc':'sort-desc');
+  render();
+}
+
+// ─── VIEW ──────────────────────────────────────────────────────────────────
+function setView(v) {
+  currentView=v;
+  ['Table','Cards','Teams'].forEach(x=>document.getElementById('view'+x).style.display=x.toLowerCase()===v?'':'none');
+  document.getElementById('vbTable').classList.toggle('active',v==='table');
+  document.getElementById('vbCards').classList.toggle('active',v==='cards');
+  document.getElementById('vbTeams').classList.toggle('active',v==='teams');
+  render();
+}
+
+// ─── MODALS ────────────────────────────────────────────────────────────────
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function closeOnBackdrop(e,id){if(e.target.id===id)closeModal(id);}
+
+// ─── COPY ──────────────────────────────────────────────────────────────────
+function copyText(text,btn) {
+  navigator.clipboard.writeText(text).then(()=>{
+    const orig=btn.textContent; btn.textContent='✅'; btn.classList.add('ok');
+    setTimeout(()=>{btn.textContent=orig;btn.classList.remove('ok');},1500);
+  }).catch(()=>{});
+}
+
+// ─── EXPORT CSV ─────────────────────────────────────────────────────────────
+function exportCSV() {
+  const headers = ['N°','Equipo','Nombre','C.C.','Carrera','Sede','Grupo','Pago','Recibo','Carta','Descuento','Plan de Negocio','CR Sustentación','Nota Sustentación','Estado Sustentación','Comentario Jurado','Mentor','Email Mentor','Contacto Mentor','Especialista','Reuniones','Email','Email2','Celular','Costo','Notas'];
+  const rows = DATA.map(d=>[
+    d.n??'',d.equipo??'',d.nombre,d.cc,d.carrera??'',d._sede??'',(d.grupo||'').trim(),
+    d.pago??'',d.recibo??'',d.carta??'',d.descuento??'',d.plan??'',
+    d.sust?.cr??'',d.sust?.nota??'',d.sust?.estado??'',d.sust?.comentario??'',
+    d.mentor??'',d.emailMentor??'',d.contactoMentor??'',d.especialista??'',
+    d.reuniones??0,d.email??'',d.email2??'',d.celular??'',d.costo??'',d.notas??''
+  ].map(v=>`"${String(v).replace(/"/g,'""')}"`));
+  const csv = [headers.join(','),...rows.map(r=>r.join(','))].join('\n');
+  const blob = new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url;
+  a.download=`TSE2025_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click(); URL.revokeObjectURL(url);
+  showToast('⬇ CSV exportado correctamente');
+}
+
+// ─── RENDER ────────────────────────────────────────────────────────────────
+function render() {
+  const filtered = getFiltered();
+  const sorted = getSorted(filtered);
+  document.getElementById('countLabel').textContent = `Mostrando ${filtered.length} de ${DATA.length} participantes`;
+  if(currentView==='table') renderTable(sorted);
+  else if(currentView==='cards') renderCards(sorted);
+  else renderTeams();
+}
+
+// ─── INIT ──────────────────────────────────────────────────────────────────
+document.getElementById('searchInput').addEventListener('input',e=>{currentSearch=e.target.value;render();});
+loadData(); renderStats(); populateSelects(); render();
+</script>
+</body>
+</html>
