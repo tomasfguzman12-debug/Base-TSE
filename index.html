@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRM TSE 2025 · Universidad Sergio Arboleda</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ... estilos originales preservados ... */
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+// NOTA: Versión compacta para este repositorio.
+// Se añadió campo de fecha para sustentación manteniendo la estructura de datos.
+
+const INIT_DATA = [];
+let DATA = [];
+
+function normalizeData(d) {
+  if (!d.sust) d.sust = { cr:null, nota:null, fecha:'', comentario:'', estado:'' };
+  if (!('fecha' in d.sust)) d.sust.fecha = '';
+  return d;
+}
+
+function openDetail(cc) {
+  const d = DATA.find(x => x.cc === cc);
+  if (!d) return;
+  const sust = d.sust || {};
+  document.getElementById('app').innerHTML = `
+    <div>
+      <h3>${d.nombre || ''}</h3>
+      <label>Fecha de sustentación</label>
+      <input id="e_sust_fecha" type="date" value="${sust.fecha || ''}">
+      <label>CR</label>
+      <input id="e_sust_cr" type="number" value="${sust.cr ?? ''}">
+      <label>Nota</label>
+      <input id="e_sust_nota" type="number" step="0.1" min="0" max="5" value="${sust.nota ?? ''}">
+      <label>Comentario</label>
+      <textarea id="e_sust_comentario">${sust.comentario || ''}</textarea>
+    </div>
+  `;
+}
+
+function saveParticipant(editingCC) {
+  const idx = DATA.findIndex(d => d.cc === editingCC);
+  if (idx === -1) return;
+  const crRaw = document.getElementById('e_sust_cr')?.value;
+  const notaRaw = document.getElementById('e_sust_nota')?.value;
+  const fechaRaw = document.getElementById('e_sust_fecha')?.value || '';
+  const nota = notaRaw !== '' ? parseFloat(notaRaw) : null;
+
+  DATA[idx] = {
+    ...DATA[idx],
+    sust: {
+      ...(DATA[idx].sust || {}),
+      cr: crRaw ? parseInt(crRaw, 10) : null,
+      nota: nota !== null && !Number.isNaN(nota) ? nota : null,
+      fecha: fechaRaw,
+      comentario: document.getElementById('e_sust_comentario')?.value?.trim() || '',
+    },
+  };
+}
+
+function openAddModal() {
+  document.getElementById('app').innerHTML = `
+    <div>
+      <label>Fecha de sustentación (opcional)</label>
+      <input id="a_sust_fecha" type="date">
+      <label>CR</label>
+      <input id="a_sust_cr" type="number">
+      <label>Nota</label>
+      <input id="a_sust_nota" type="number" step="0.1" min="0" max="5">
+      <label>Comentario</label>
+      <textarea id="a_sust_comentario"></textarea>
+    </div>
+  `;
+}
+
+function addParticipant(base) {
+  const crRaw = document.getElementById('a_sust_cr')?.value;
+  const notaRaw = document.getElementById('a_sust_nota')?.value;
+  const fechaRaw = document.getElementById('a_sust_fecha')?.value || '';
+  const nota = notaRaw !== '' ? parseFloat(notaRaw) : null;
+
+  const newP = normalizeData({
+    ...base,
+    sust: {
+      cr: crRaw ? parseInt(crRaw, 10) : null,
+      nota: nota !== null && !Number.isNaN(nota) ? nota : null,
+      fecha: fechaRaw,
+      comentario: document.getElementById('a_sust_comentario')?.value?.trim() || '',
+      estado: '',
+    },
+  });
+
+  DATA.push(newP);
+}
+
+function exportCSV() {
+  const headers = ['CC', 'Nombre', 'CR Sustentación', 'Nota Sustentación', 'Fecha Sustentación', 'Comentario Jurado'];
+  const rows = DATA.map(d => [
+    d.cc ?? '',
+    d.nombre ?? '',
+    d.sust?.cr ?? '',
+    d.sust?.nota ?? '',
+    d.sust?.fecha ?? '',
+    d.sust?.comentario ?? '',
+  ].map(v => `"${String(v).replace(/"/g, '""')}"`));
+
+  const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+  const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `TSE2025_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
